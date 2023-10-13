@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "Syndicate",
+    "slug": "Syndicate",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "Syndicate"
+}

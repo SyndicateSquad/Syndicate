@@ -1,3 +1,45 @@
+# Expo Router Example
+
+Use [`expo-router`](https://expo.github.io/router) to build native navigation using files in the `app/` directory.
+
+## 🚀 How to use
+
+```sh
+npx create-expo-app -e with-router
+```
+- Used to create 
+## 📝 Notes
+
+- [Expo Router: Docs](https://expo.github.io/router)
+- [Expo Router: Repo](https://github.com/expo/router)
+
+## How to run
+To run your project, run one of the following npm commands.
+
+```sh
+npm run web
+```
+- Main command to use
+- Runs the React Native app in a web browser 
+```sh
+npm start 
+```
+- Starts the development server for React Native project but doesnt open in web browser 
+```sh
+npx expo start
+```
+- For projects created with Expo, a framework for building React Native apps
+```sh
+npm run android
+```
+- This command is used to build and run your React Native app on an Android emulator or a connected Android device.
+- Must have Android Studio, an emulator, or a connected Android device set up
+```sh
+npm run ios #
+```
+- This command is used to build and run your React Native app on an iOS simulator or a connected iOS device.
+- Must have Xcode installed and, if testing on a device, be connected to a Mac
+
 # **Syndicate**
 Connect Developers and Investors to build Real Estate
 
