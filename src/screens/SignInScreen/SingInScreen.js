@@ -2,12 +2,15 @@ import React, { useState } from 'react'
 import { View, Image, StyleSheet, useWindowDimensions } from 'react-native'
 import Logo from '../../../assets/images/Logo.jpg'
 import CustomInput from '../../components/CustomInput/CustomInput'
-
+import CustomButton from '../../components/CustomButton/CustomButton'
 const SingInScreen = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
     var { height } = useWindowDimensions();
+    const onSignInPressed = () => {
+        console.warn("Sign in");
+    }
     return (
         <View style={styles.root}>
             <Image
@@ -26,6 +29,8 @@ const SingInScreen = () => {
                 setValue={setPassword}
                 secureTextEntry
             />
+
+            <CustomButton text="Sign In" onPress={onSignInPressed} />
         </View>
     );
 };
