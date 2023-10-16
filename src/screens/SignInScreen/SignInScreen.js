@@ -1,38 +1,40 @@
 import React, { useState } from 'react'
 import { View, Image, StyleSheet, useWindowDimensions, ScrollView } from 'react-native'
-import Logo from '../../../assets/images/Logo.png'
+
 import CustomInput from '../../components/CustomInput/CustomInput'
 import CustomButton from '../../components/CustomButton/CustomButton'
-
-
-const SingInScreen = () => {
+import Logo from '../../../assets/images/Logo.jpeg';
+import SocialSignInButton from '../../components/SocialSignInButtons/SocialSignInButtons';
+import { useNavigation } from '@react-navigation/native';
+const SignInScreen = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    var { height } = useWindowDimensions();
+    const { height } = useWindowDimensions();
+    const navigation = useNavigation();
+
     const onSignInPressed = () => {
-        console.warn("Sign in");
+        /*
+        *
+        *
+            add user validation here
+        *
+        *
+        */
+        navigation.navigate('Home');
     }
     const onForgotPasswordPressed = () => {
-        console.warn('onForgotpasswordPressed')
-    }
-    const onSignInGoogle = () => {
-        console.warn('onSignInGoogle');
-    }
-    const onSignInApple = () => {
-        console.warn('onSignInGoogle');
+        navigation.navigate('ForgotPassword')
     }
     const onSignUpPress = () => {
-        console.warn('onSignUpPress');
+        navigation.navigate('SignUp')
     }
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.root}>
                 <Image
                     source={Logo}
-                    style={[styles.logo, { height: height = 0.3 }]}
-                    resizeMode="contain"
-                />
+                    style={[styles.logo, { height: height * 0.3 }]} />
                 <CustomInput
                     placeholder='Username'
                     value={username}
@@ -51,25 +53,14 @@ const SingInScreen = () => {
                 />
                 <CustomButton
                     text="Forgot Password"
-                    onPressed={onForgotPasswordPressed}
+                    onPress={onForgotPasswordPressed}
                     type="TERTIARY"
                 />
-
-                <CustomButton
-                    text="Sign In with Google"
-                    onPress={onSignInGoogle}
-                    bgColor="#FAE9AE"
-                    fgColor="#DD4D44"
-                />
-                <CustomButton
-                    text="Sign In with Apple"
-                    onPress={onSignInApple}
-                    bgColor="#e3e3e3"
-                    fgColor="#363636"
-                />
+                <SocialSignInButton/>
                 <CustomButton
                     text="Don't have an account? Create one"
                     onPress={onSignUpPress}
+                    type='TERTIARY'
                 />
             </View>
         </ScrollView>
@@ -80,11 +71,13 @@ const styles = StyleSheet.create({
     root: {
         alignItems: 'center',
         padding: 20,
+        paddingTop:'40%',
     },
     logo: {
+        resizeMode: 'contain',
         width: '70%',
         maxWidth: 300,
         maxHeight: 200,
     },
 });
-export default SingInScreen
+export default SignInScreen
