@@ -1,21 +1,19 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import SingInScreen from './src/screens/SignInScreen/SingInScreen';
-
-
+import { StyleSheet } from 'react-native';
+import Navigation from './src/navigation';
+import { SafeAreaView } from 'react-native-safe-area-context';
 export default function App() {
   return (
-    <View style={styles.root}>
-      <SingInScreen />
-    </View>
+    <SafeAreaView style={styles.root}>
+      <Navigation />
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    // alignItems: 'center',
     backgroundColor: '#F9FBFC'
   },
 });

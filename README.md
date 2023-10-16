@@ -41,7 +41,7 @@ npm run ios #
 - Must have Xcode installed and, if testing on a device, be connected to a Mac
 
 # **Syndicate**
-Connect Developers and Investors to build Real Estate
+Connects Developers and Investors to build Real Estate
 
 ## _Profile Creation_
  
