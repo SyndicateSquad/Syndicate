@@ -9,6 +9,8 @@ import CustomInput from '../../components/CustomInput/CustomInput'
 import CustomButton from '../../components/CustomButton/CustomButton'
 import SocialSignUp from './SocialSignUp'
 import { useNavigation } from '@react-navigation/native'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 /*
     TODO: Signup requires the user to create a profile
     asks for their first and last name, email, bio, 
@@ -27,9 +29,20 @@ const SignUpScreen = () => {
     const [phoneNumber, setPhoneNumber] = useState('');
     const navigation = useNavigation();
 
-    const onRegisterPressed = () => {
-        navigation.navigate('ConfirmEmail')
+    const onRegisterPressed = async () => {
+        if (password !== passwordRepeat) {
+            console.warn('Passwords do not match. Please try again.');
+        } else {
+            try {
+                // Save user's email and password in secure storage
+                await AsyncStorage.setItem('userEmail', email);
+                await AsyncStorage.setItem('userPassword', password);
 
+                navigation.navigate('ConfirmEmail');
+            } catch (error) {
+                console.error('Error saving user credentials:', error);
+            }
+        }
     }
     const onSignInPressed = () => {
         navigation.navigate('SignIn')
@@ -54,6 +67,7 @@ const SignUpScreen = () => {
                     setValue={setPhoneNumber}
                     label='Phone-Number'
                     test='normal'
+                    maxLength={10}
                 />
                 {/*
                     TODO: add a forgot email option that recovers account using phone number
