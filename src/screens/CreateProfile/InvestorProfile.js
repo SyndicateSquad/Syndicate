@@ -54,14 +54,14 @@ const InvestorProfile = () => {
                     setSelected={(val) => setSelected(val)}
                     data={propertyType}
                     placeholder='               Select Property Type               '
-                    maxHeight={150}
+                    maxHeight={250}
                 />
                 <Text style={[styles.label, { right: 100 }]}>Property Price Range</Text>
                 <MultipleSelectList
                     setSelected={(val) => setSelected(val)}
                     data={priceRange}
                     placeholder='               Select Price Range                  '
-                    maxHeight={210}
+                    maxHeight={300}
                 />
                 <Text style={[styles.label, { right: 85 }]}>Your Investment Capacity</Text>
                 <MultipleSelectList
@@ -75,7 +75,7 @@ const InvestorProfile = () => {
                     setSelected={(val) => setSelected(val)}
                     data={propertySize}
                     placeholder='      Select Your Desired Property Size     '
-                    maxHeight={210}
+                    maxHeight={300}
                 />
                 <Text style={[styles.label, { right: 150 }]}>Location</Text>
                 <CustomInput
