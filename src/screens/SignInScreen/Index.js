@@ -1,1 +1,1 @@
-export {default} from './SingInScreen';
+export {default} from './SignInScreen';

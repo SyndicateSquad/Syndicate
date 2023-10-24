@@ -41,7 +41,7 @@ npm run ios #
 - Must have Xcode installed and, if testing on a device, be connected to a Mac
 
 # **Syndicate**
-Connect Developers and Investors to build Real Estate
+Connects Developers and Investors to build Real Estate
 
 ## _Profile Creation_
  
@@ -66,4 +66,3 @@ Connect Developers and Investors to build Real Estate
 **In-App Messaging**: Once a match is established, users can communicate with each other through an in-app messaging system. This feature enables them to discuss potential real estate projects, investment opportunities, and collaboration details.
  
 **Secure and Private**: Conversations are secure and private, ensuring that sensitive information remains confidential.
- 
