@@ -7,6 +7,7 @@ import { MultipleSelectList } from 'react-native-dropdown-select-list'
 import CustomButton from '../../components/CustomButton/CustomButton';
 const InvestorProfile = () => {
     const [country, setCountry] = useState('');
+    const [selected, setSelected] = React.useState([]);
     const propertyType = [
         { key: '1', value: 'Commercial' },
         { key: '2', value: 'Residential' },
