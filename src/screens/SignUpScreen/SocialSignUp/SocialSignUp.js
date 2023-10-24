@@ -1,25 +1,22 @@
 import React from 'react'
-import CustomButton from '../CustomButton/CustomButton'
-
-const SocialSignInButtons = () => {
+import CustomButton from '../../../components/CustomButton/CustomButton';
+const SocialSignUp = () => {
   const onSignInGoogle = () => {
     console.warn('onSignInGoogle');
   }
-
   const onSignInApple = () => {
     console.warn('onSignInApple');
   }
-
   return (
     <>
       <CustomButton
-        text="Sign In with Google"
+        text="Continue with Google"
         onPress={onSignInGoogle}
         bgColor="#FAE9AE"
         fgColor="#DD4D44"
       />
       <CustomButton
-        text="Sign In with Apple"
+        text="Continue with Apple"
         onPress={onSignInApple}
         bgColor="#e3e3e3"
         fgColor="#363636"
@@ -28,6 +25,4 @@ const SocialSignInButtons = () => {
   )
 }
 
-
-
-export default SocialSignInButtons
+export default SocialSignUp

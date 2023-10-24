@@ -13,10 +13,13 @@ const ConfirmEmailScreen = () => {
 
     const [code, setCode] = useState('');
     const navigation = useNavigation();
-    
-    
+
+
     const onConfirmPressed = () => {
-        navigation.navigate('Home')
+        /*
+            TODO: add confirmation code validation
+        */
+        navigation.navigate('CreateProfile')
     }
     const onSignInPressed = () => {
         navigation.navigate('SignIn')
@@ -30,10 +33,12 @@ const ConfirmEmailScreen = () => {
                 <Text style={styles.title}>
                     Confirm Your Email
                 </Text>
+                <Text style={[styles.label, { right: 60 }]}>Enter your confirmation code</Text>
                 <CustomInput
-                    placeholder='Enter your confirmation code'
+                    // placeholder='Enter your confirmation code'
                     value={code}
                     setValue={setCode}
+                    test='normal'
                 />
                 <CustomButton
                     text="Confirm"
@@ -65,13 +70,13 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#051C60',
         margin: 10,
+        marginBottom: 30,
     },
-    // text: {
-    //     color: 'gray',
-    //     marginVertical: 10,
-    // },
-    // link: {
-    //     color: '#FDB075'
-    // },
+    label: {
+        paddingTop: 10,
+        fontSize: 20,
+        fontWeight: 100,
+        marginBottom: -2,
+    }
 });
 export default ConfirmEmailScreen

@@ -7,24 +7,34 @@ import {
 } from 'react-native'
 import CustomInput from '../../components/CustomInput/CustomInput'
 import CustomButton from '../../components/CustomButton/CustomButton'
-import SocialSignInButtons from '../../components/SocialSignInButtons/SocialSignInButtons'
+import SocialSignUp from './SocialSignUp'
 import { useNavigation } from '@react-navigation/native'
+/*
+    TODO: Signup requires the user to create a profile
+    asks for their first and last name, email, bio, 
+    location (city, state, country) (only for investors), 
+    user type, preferences
 
+    TODO: seperate from the createProfile screen
+    if user is a developer, have a method called addProperty()
+    add property has property type, location, sq ft, price, 
+    allows partial investments? and maybe more stuff
+ */
 const SignUpScreen = () => {
-    const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordRepeat, setPasswordRepeat] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
     const navigation = useNavigation();
 
     const onRegisterPressed = () => {
         navigation.navigate('ConfirmEmail')
-        
+
     }
     const onSignInPressed = () => {
         navigation.navigate('SignIn')
     }
-    
+
     // const OnTermsOfUsePressed = () => {
     //    console.warn('onTermsOfUsePressed');
     // }
@@ -37,27 +47,43 @@ const SignUpScreen = () => {
                 <Text style={styles.title}>
                     Create an account
                 </Text>
+                <Text style={[styles.label, { right: 112 }]}>Phone Number</Text>
                 <CustomInput
-                    placeholder='Username'
-                    value={username}
-                    setValue={setUsername}
+                    // placeholder='Phone Number'
+                    value={phoneNumber}
+                    setValue={setPhoneNumber}
+                    label='Phone-Number'
+                    test='normal'
                 />
+                {/*
+                    TODO: add a forgot email option that recovers account using phone number
+
+                */ }
+                <Text style={[styles.label, { right: 155 }]}>Email</Text>
                 <CustomInput
-                    placeholder='Email'
+                    // placeholder='Email'
                     value={email}
                     setValue={setEmail}
+                    label='Email'
+                    test='normal'
                 />
+                <Text style={[styles.label, { right: 135 }]}>Password</Text>
                 <CustomInput
                     placeholder='Password'
                     value={password}
                     setValue={setPassword}
                     secureTextEntry
+                    label='Password'
+                    test='normal'
                 />
+                <Text style={[styles.label, { right: 105 }]}>Repeat Password</Text>
                 <CustomInput
-                    placeholder='Repeat Password'
+                    // placeholder='Repeat Password'
                     value={passwordRepeat}
                     setValue={setPasswordRepeat}
                     secureTextEntry
+                    label='Password'
+                    test='normal'
                 />
                 <CustomButton
                     text="Register"
@@ -68,7 +94,13 @@ const SignUpScreen = () => {
                     <Text style={styles.link} OnPress={OnTermsOfUsePressed}> Terms of Use</Text> and 
                     <Text style={styles.link} OnPress={OnTermsOfUsePressed}> Privacy Policy</Text>
                 </Text> */}
-                <SocialSignInButtons/>
+                <Text style={{
+                    fontSize: 15,
+                    fontWeight: 'bold',
+                    color: '#051C60',
+                    margin: 10
+                }}> OR </Text>
+                <SocialSignUp />
 
                 <CustomButton
                     text="Have an account? Sign in"
@@ -76,7 +108,7 @@ const SignUpScreen = () => {
                     type='TERTIARY'
                 />
             </View>
-        </ScrollView>
+        </ScrollView >
     );
 };
 
@@ -84,14 +116,21 @@ const styles = StyleSheet.create({
     root: {
         alignItems: 'center',
         padding: 20,
-        paddingTop: '70%',
+        paddingTop: '30%',
     },
     title: {
-        fontSize: 24,
+        fontSize: 30,
         fontWeight: 'bold',
         color: '#051C60',
         margin: 10,
+        paddingBottom: 15,
     },
+    label: {
+        paddingTop: 10,
+        fontSize: 20,
+        fontWeight: 100,
+        marginBottom: -2,
+    }
     // text: {
     //     color: 'gray',
     //     marginVertical: 10,
