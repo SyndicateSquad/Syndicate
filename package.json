@@ -19,7 +19,7 @@
     "amazon-cognito-identity-js": "^6.3.6",
     "aws-amplify": "^5.3.11",
     "aws-amplify-react-native": "^7.0.7",
-    "expo": "~49.0.13",
+    "expo": "^49.0.17",
     "expo-camera": "~13.4.4",
     "expo-image-picker": "~14.3.2",
     "expo-splash-screen": "~0.20.5",
