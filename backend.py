@@ -1,3 +1,5 @@
+# Importing AWS SDK for Python and other helper libraries
+
 import boto3
 from decimal import Decimal
 import json
@@ -26,6 +28,7 @@ class DeleteUser(BaseModel):
     email: str
     
 
+# Check for login credential validity
 @app.post('/login', response_model=bool)
 async def receive_data(credential: LoginCredential):
     # Process the data
@@ -49,6 +52,7 @@ async def receive_data(credential: LoginCredential):
     # return JSONResponse(content=False, status_code=400)
 
 
+# Add Sign Up details to DynamoDB
 @app.post('/signup', response_model=bool)
 async def signup(credential: SignUpCredential):
     # if credential.password != credential.repeat_password:
@@ -75,6 +79,7 @@ async def signup(credential: SignUpCredential):
     return True
     
 
+# Handle Delete User Request
 @app.post('/delete_user', response_model=bool)
 async def delete(user: DeleteUser):
     
