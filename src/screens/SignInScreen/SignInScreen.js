@@ -32,31 +32,50 @@ const SignInScreen = () => {
             password: 'letmein2023',
         },
     ];
-    const onSignInPressed = async () => {
-        /*
-        *
-        *
-            add user validation here
-        *
-        *
-        */
-        try {
-            // Retrieve stored user credentials
-            const storedEmail = await AsyncStorage.getItem('userEmail');
-            const storedPassword = await AsyncStorage.getItem('userPassword');
 
-            if (storedEmail === email && storedPassword === password) {
-                // Sign in successful, navigate to the Home screen
-                navigation.navigate('Home');
-            } else {
-                console.warn('Invalid email or password. Please try again.');
-                setPassword('');
+    const onSignInPressed = async () => {
+        // http://127.0.0.1 is the default socket that's used by FastAPI
+        async function loginUser(url = 'http://127.0.0.1:8000/login', data = { email, password }) {
+            try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+        
+            const responseData = await response.json();
+            console.warn(responseData); // Log the response data
+            } catch (error) {
+            console.error('Error:', error);
+            // Handle the error as needed
             }
-        } catch (error) {
-            console.error('Error retrieving user credentials:', error);
         }
+        
+        // Call loginUser function with appropriate data
+        await loginUser(); // Assuming you'll pass the required data here
+        };
+          
+
+        // try {
+        //     // Retrieve stored user credentials
+        //     const storedEmail = await AsyncStorage.getItem('userEmail');
+        //     const storedPassword = await AsyncStorage.getItem('userPassword');
+
+        //     if (storedEmail === email && storedPassword === password) {
+        //         // Sign in successful, navigate to the Home screen
+        //         navigation.navigate('Home');
+        //     } else {
+        //         console.warn('Invalid email or password. Please try again.');
+        //         setPassword('');
+        //     }
+        // } catch (error) {
+        //     console.error('Error retrieving user credentials:', error);
+        // }
         // navigation.navigate('Home')
-    }
+    // }
+    
     const onForgotPasswordPressed = () => {
         navigation.navigate('ForgotPassword')
     }

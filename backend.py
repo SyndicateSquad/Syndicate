@@ -5,14 +5,30 @@ from decimal import Decimal
 import json
 from boto3.dynamodb.conditions import Key
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from fastapi.responses import JSONResponse
 
-
 app = FastAPI()
-dynamoDB = boto3.resource('dynamodb')
-table = dynamoDB.Table('Users')
 
+origins = [
+    "http://10.182.149.211:8000",
+    "https://10.182.149.211:8000",
+    "exp://10.182.149.211:8000",  # This is for Expo
+]
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+dynamoDB = boto3.resource('dynamodb')
+table = dynamoDB.Table('Investor')
 
 
 class LoginCredential(BaseModel):
@@ -23,9 +39,10 @@ class LoginCredential(BaseModel):
 @app.post('/login', response_model=bool)
 async def receive_data(credential: LoginCredential):
     # Process the data
-    print("backedn hit!!")
+    table = dynamoDB.Table('Investor')
+    print("backend hit!!")
     query_key = 'Email'  # The key you want to query on
-    query_value = credential.email  # The value to query for
+    query_value = credential.email.lower()  # The value to query for
     
     key_condition_expression = Key(query_key).eq(query_value)
 
@@ -34,14 +51,14 @@ async def receive_data(credential: LoginCredential):
         KeyConditionExpression=key_condition_expression
     )
 
+    # return True
     # Process the results
     if len(response['Items']) > 0:
         if credential.password == response['Items'][0]['Password']:
-            return True 
-            # return JSONResponse(content=True, status_code=200)
-    return False
-    # return JSONResponse(content=False, status_code=400)
-
+            # return True 
+            return JSONResponse(content=[1,2,3,4], status_code=200)
+    # return False
+    return JSONResponse(content=False, status_code=400)
 
 
 class SignUpCredential(BaseModel):
@@ -61,7 +78,7 @@ async def signup(credential: SignUpCredential):
     
     
     item = {
-        'Email': credential.email,
+        'Email': credential.email.lower(),
         'Password': credential.password,
         'Phone_Number': credential.phone_number
     }
@@ -78,14 +95,14 @@ async def signup(credential: SignUpCredential):
     
 
 
-class DeleteUser(BaseModel):
+class UserEmail(BaseModel):
     email: str
     
 # Handle Delete User Request
 @app.post('/delete_user', response_model=bool)
-async def delete(user: DeleteUser):
+async def delete(user: UserEmail):
     
-    primary_key = {'Email': user.email}
+    primary_key = {'Email': user.email.lower()}
     
     try:
         response = table.delete_item(
@@ -96,3 +113,21 @@ async def delete(user: DeleteUser):
         return False
     
     return True
+
+
+# Receive the Investor's (User's) email id, get the preferences, sort ALL property listings based on preferences, return order of properties by ID
+
+
+@app.post('/property_swipe_list')
+
+async def get_property_swipe_list(investor: UserEmail):
+
+    # get minimum investment preference of the investor
+    key_condition_expression = Key('Email').eq(email)
+    table = dynamoDB.Table('Investor')
+    response = table.query(
+        KeyConditionExpression=key_condition_expression
+    )
+    min_investment = response['Items'][0]['Min_Investment']
+
+    # sort property listings by min investment asc and return 
