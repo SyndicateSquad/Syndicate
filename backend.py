@@ -13,20 +13,11 @@ app = FastAPI()
 dynamoDB = boto3.resource('dynamodb')
 table = dynamoDB.Table('Users')
 
-# try to unify both classes later using Optional[]
+
+
 class LoginCredential(BaseModel):
     email: str
     password: str
-
-class SignUpCredential(BaseModel):
-    phone_number: int
-    email: str
-    password: str
-    repeat_password: str
-
-class DeleteUser(BaseModel):
-    email: str
-    
 
 # Check for login credential validity
 @app.post('/login', response_model=bool)
@@ -51,6 +42,13 @@ async def receive_data(credential: LoginCredential):
     return False
     # return JSONResponse(content=False, status_code=400)
 
+
+
+class SignUpCredential(BaseModel):
+    phone_number: int
+    email: str
+    password: str
+    repeat_password: str
 
 # Add Sign Up details to DynamoDB
 @app.post('/signup', response_model=bool)
@@ -79,6 +77,10 @@ async def signup(credential: SignUpCredential):
     return True
     
 
+
+class DeleteUser(BaseModel):
+    email: str
+    
 # Handle Delete User Request
 @app.post('/delete_user', response_model=bool)
 async def delete(user: DeleteUser):
