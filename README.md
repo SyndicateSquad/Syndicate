@@ -33,10 +33,11 @@ npm start
 - Starts the development server for React Native project but doesnt open in web browser
 
 ```sh
-npx expo start
+npx expo start --port 8000
 ```
 
 - For projects created with Expo, a framework for building React Native apps
+- Port 8000 is chosen to keep endpoints connected
 
 ```sh
 npm run android
@@ -51,6 +52,20 @@ npm run ios #
 
 - This command is used to build and run your React Native app on an iOS simulator or a connected iOS device.
 - Must have Xcode installed and, if testing on a device, be connected to a Mac
+
+```sh
+uvicorn backend:app --reload --port 8000
+```
+
+- This command starts the backend.py server file
+- Port is set to 8000 to keep endpoints connected
+
+## Other Dependencies
+
+1. FastAPI
+2. Uvicorn
+3. Boto3
+4. AWS CLI (to configure credentials for access to S3 and DynamoDB)
 
 # **Syndicate**
 
