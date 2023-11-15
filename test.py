@@ -1,28 +1,26 @@
-import boto3
-from boto3.dynamodb.conditions import Key
+import os
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+from random import randint
+
+with open("confirmation_email.html", 'r') as html:
+    confirmation_code_content = html.read()
 
 
-dynamoDB = boto3.resource('dynamodb')
-table = dynamoDB.Table('Investor')
-response = table.query(
-    KeyConditionExpression=key_condition_expression
-)
+CONFIRMATION_CODE = randint(12345, 98765)
 
-return response['Items'][0]
+confirmation_code_content = confirmation_code_content.replace("{{CONFIRMATION_CODE}}", CONFIRMATION_CODE)
 
-
-def get_property_swipe_list(email):
-
-    key_condition_expression = Key('Email').eq(email)
-
-    # Execute the query
-    table = dynamoDB.Table('Investor')
-    response = table.query(
-        KeyConditionExpression=key_condition_expression
-    )
-
-    # return response['Items'][0]['Min_Investment']
-    return response['Items'][0]
-
-ret = get_property_swipe_list('abc@gmail.com')
-print(ret)
+message = Mail(
+    from_email= 'syndicatesquad9@gmail.com',
+    to_emails= 'pranavpujar@gmail.com',
+    subject= 'Sending an email with Twilio SendGrid',
+    html_content= confirmation_code_content)
+try:
+    sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+    response = sg.send(message)
+    print(response.status_code)
+    print(response.body)
+    print(response.headers)
+except Exception as e:
+    print(e)

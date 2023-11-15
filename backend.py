@@ -1,13 +1,17 @@
 # Importing AWS SDK for Python and other helper libraries
-
+import os
 import boto3
-from decimal import Decimal
 import json
+from random import randint
+from decimal import Decimal
 from boto3.dynamodb.conditions import Key
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from fastapi.responses import JSONResponse
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+
 
 app = FastAPI()
 
@@ -16,7 +20,6 @@ origins = [
     "https://10.182.149.211:8000",
     "exp://10.182.149.211:8000",  # This is for Expo
 ]
-
 
 app.add_middleware(
     CORSMiddleware,
@@ -28,6 +31,8 @@ app.add_middleware(
 
 
 dynamoDB = boto3.resource('dynamodb')
+s3 = boto3.resource('s3')
+
 table = dynamoDB.Table('Investor')
 
 
@@ -56,7 +61,7 @@ async def receive_data(credential: LoginCredential):
     if len(response['Items']) > 0:
         if credential.password == response['Items'][0]['Password']:
             # return True 
-            return JSONResponse(content=[1,2,3,4], status_code=200)
+            return JSONResponse(content=True, status_code=200)
     # return False
     return JSONResponse(content=False, status_code=400)
 
@@ -115,11 +120,37 @@ async def delete(user: UserEmail):
     return True
 
 
+@app.post('/confirmation_code')
+
+async def generate_confirmation_code(user: UserEmail):
+    
+    with open("confirmation_email.html", 'r') as html:
+        confirmation_email_content = html.read()
+
+    CONFIRMATION_CODE = randint(12345, 98765)
+
+    confirmation_email_content = confirmation_email_content.replace("{{CONFIRMATION_CODE}}", str(CONFIRMATION_CODE))
+
+    message = Mail(
+        from_email= 'syndicatesquad9@gmail.com',
+        to_emails= user.email,
+        subject= 'Syndicate - Confirmation Email',
+        html_content= confirmation_email_content)
+    try:
+        sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+        response = sg.send(message)
+        # print(response.status_code)
+        # print(response.body)
+        # print(response.headers)
+    except Exception as e:
+        return JSONResponse(content=f'Error: {e}', status_code=400)
+    
+    return JSONResponse(content= CONFIRMATION_CODE, status_code=200)
+
+
+
 # Receive the Investor's (User's) email id, get the preferences, sort ALL property listings based on preferences, return order of properties by ID
-
-
 @app.post('/property_swipe_list')
-
 async def get_property_swipe_list(investor: UserEmail):
 
     # get minimum investment preference of the investor

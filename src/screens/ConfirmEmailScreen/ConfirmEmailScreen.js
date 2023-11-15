@@ -8,19 +8,52 @@ import {
 import CustomInput from '../../components/CustomInput/CustomInput'
 import CustomButton from '../../components/CustomButton/CustomButton'
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ConfirmEmailScreen = () => {
 
     const [code, setCode] = useState('');
     const navigation = useNavigation();
 
+// the verification email must be sent earlier, not when confirm button is pressed
 
-    const onConfirmPressed = () => {
-        /*
-            TODO: add confirmation code validation
-        */
-        navigation.navigate('CreateProfile')
-    }
+    const onConfirmPressed = async () => {
+
+        const email = await AsyncStorage.getItem('userEmail');
+        console.warn(email);
+
+        async function verifyConfirmationCode(url = 'http://127.0.0.1:8000/confirmation_code', data = { email }) {
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                    'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
+            
+                const responseContent = await response.json();
+                console.warn(responseContent) 
+
+                // check if the input confirmation code equals the one geenrated by the backend
+
+                if (response.ok){
+                    navigation.navigate('CreateProfile')
+                }
+                else{
+                    console.warn("Incorrect Confirmation Code");
+                }
+
+            } 
+            catch (error) {
+                console.error('Error:', error);
+            }
+        }
+        
+        await verifyConfirmationCode(); 
+        
+    };
+
     const onSignInPressed = () => {
         navigation.navigate('SignIn')
     }

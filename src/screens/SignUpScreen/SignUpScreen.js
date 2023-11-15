@@ -37,9 +37,12 @@ const SignUpScreen = () => {
                 // Save user's email and password in secure storage
                 await AsyncStorage.setItem('userEmail', email);
                 await AsyncStorage.setItem('userPassword', password);
+                await AsyncStorage.setItem('userPhoneNum', phoneNumber);
 
                 navigation.navigate('ConfirmEmail');
-            } catch (error) {
+
+            } 
+            catch (error) {
                 console.error('Error saving user credentials:', error);
             }
         }
@@ -54,6 +57,7 @@ const SignUpScreen = () => {
     // const onPrivacyPressed = () => {
     //      console.warn('onPrivacyPressed');
     // }
+    
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.root}>
