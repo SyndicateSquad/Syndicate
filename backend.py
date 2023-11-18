@@ -99,7 +99,6 @@ async def signup(credential: SignUpCredential):
     return True
     
 
-
 class UserEmail(BaseModel):
     email: str
     
@@ -120,6 +119,7 @@ async def delete(user: UserEmail):
     return True
 
 
+# Works
 @app.post('/confirmation_code')
 async def generate_confirmation_code(user: UserEmail):
     with open("confirmation_email.html", 'r') as html:
@@ -143,7 +143,7 @@ async def generate_confirmation_code(user: UserEmail):
     except Exception as e:
         return JSONResponse(content=f'Error: {e}', status_code=400)
     
-    return JSONResponse(content= CONFIRMATION_CODE, status_code=200)
+    return JSONResponse(content= str(CONFIRMATION_CODE), status_code=200)
 
 
 

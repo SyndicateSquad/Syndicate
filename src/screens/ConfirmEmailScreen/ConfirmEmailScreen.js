@@ -9,14 +9,12 @@ import CustomInput from '../../components/CustomInput/CustomInput'
 import CustomButton from '../../components/CustomButton/CustomButton'
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { CookieStorage } from 'amazon-cognito-identity-js';
+
 
 const ConfirmEmailScreen = () => {
 
     const [input_code, setCode] = useState('');
     const navigation = useNavigation();
-
-// the verification email must be sent earlier, not when confirm button is pressed
 
     const onConfirmPressed = async () => {
 
@@ -24,16 +22,51 @@ const ConfirmEmailScreen = () => {
 
         if (input_code !== generatedConfirmationCode){
             console.warn("Incorrect Code");
+            console.warn(input_code);
+            console.warn(generatedConfirmationCode);
+        } else {
+            navigation.navigate("CreateProfile");
         }
     
     };
 
+    const onResendPressed = async () => {
+
+        const email = await AsyncStorage.getItem('userEmail');
+
+        async function sendConfirmationCode(url = 'http://127.0.0.1:8000/confirmation_code', data = { email }) {
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                    'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
+                
+                //receive the random-generated confirmation code from backend
+                const generated_conf_code = await response.json(); 
+                await AsyncStorage.setItem('confimation_code', generated_conf_code);
+
+                if (response.ok){
+                    console.warn("Re-sent Confirmation Code via Email");
+                } else {
+                    console.error("Unable to send Confirmation code via Email");
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }        
+
+        await sendConfirmationCode();
+
+    }
+
     const onSignInPressed = () => {
         navigation.navigate('SignIn')
     }
-    const onResendPressed = () => {
-        console.warn('OnResendPressed')
-    }
+
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.root}>
@@ -44,7 +77,9 @@ const ConfirmEmailScreen = () => {
                 <CustomInput
                     // placeholder='Enter your confirmation code'
                     value={input_code}
-                    setValue={setCode}
+                    // setValue={setCode}
+                    setValue={(numericCode) => setCode(numericCode.replace(/[^0-9]/g, '').slice(0, 10), 10)}
+                    keyboardType = 'numeric'
                     test='normal'
                 />
                 <CustomButton
