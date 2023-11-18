@@ -22,8 +22,6 @@ const ConfirmEmailScreen = () => {
 
         if (input_code !== generatedConfirmationCode){
             console.warn("Incorrect Code");
-            console.warn(input_code);
-            console.warn(generatedConfirmationCode);
         } else {
             navigation.navigate("CreateProfile");
         }

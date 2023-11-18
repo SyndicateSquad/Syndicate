@@ -119,9 +119,11 @@ async def delete(user: UserEmail):
     return True
 
 
-# Works
+
 @app.post('/confirmation_code')
+
 async def generate_confirmation_code(user: UserEmail):
+    
     with open("confirmation_email.html", 'r') as html:
         confirmation_email_content = html.read()
 
@@ -134,12 +136,11 @@ async def generate_confirmation_code(user: UserEmail):
         to_emails= user.email,
         subject= 'Syndicate - Confirmation Email',
         html_content= confirmation_email_content)
+
     try:
         sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
         response = sg.send(message)
-        # print(response.status_code)
-        # print(response.body)
-        # print(response.headers)
+
     except Exception as e:
         return JSONResponse(content=f'Error: {e}', status_code=400)
     

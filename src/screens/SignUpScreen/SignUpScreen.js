@@ -109,7 +109,7 @@ const SignUpScreen = () => {
                     // setValue={setPhoneNumber}
                     setValue={(newPhoneNumber) => setPhoneNumber(newPhoneNumber.replace(/[^0-9]/g, '').slice(0, 10))}
                     label='Phone-Number'
-                    heyboardType = 'numeric'
+                    keyboardType = 'numeric'
                     test='normal'
                     maxLength={10}
                 />

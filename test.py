@@ -6,6 +6,7 @@ from random import randint
 with open("confirmation_email.html", 'r') as html:
     confirmation_code_content = html.read()
 
+# api key deleted 
 SENDGRID_API_KEY = "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"
 CONFIRMATION_CODE = randint(12345, 98765)
 
