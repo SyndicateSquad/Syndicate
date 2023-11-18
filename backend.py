@@ -121,9 +121,7 @@ async def delete(user: UserEmail):
 
 
 @app.post('/confirmation_code')
-
 async def generate_confirmation_code(user: UserEmail):
-    
     with open("confirmation_email.html", 'r') as html:
         confirmation_email_content = html.read()
 

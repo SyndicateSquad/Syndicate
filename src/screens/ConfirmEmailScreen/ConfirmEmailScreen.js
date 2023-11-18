@@ -20,34 +20,9 @@ const ConfirmEmailScreen = () => {
     const onConfirmPressed = async () => {
 
         const email = await AsyncStorage.getItem('userEmail');
-        console.warn(email);
 
-        async function verifyConfirmationCode(url = 'http://127.0.0.1:8000/confirmation_code', data = { email }) {
-            try {
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: {
-                    'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data),
-                });
+        async function verifyConfirmationCode(url = 'http://127.0.0.1:8000/', data = { email }) {
             
-                const responseContent = await response.json();
-                console.warn(responseContent) 
-
-                // check if the input confirmation code equals the one geenrated by the backend
-
-                if (response.ok){
-                    navigation.navigate('CreateProfile')
-                }
-                else{
-                    console.warn("Incorrect Confirmation Code");
-                }
-
-            } 
-            catch (error) {
-                console.error('Error:', error);
-            }
         }
         
         await verifyConfirmationCode(); 

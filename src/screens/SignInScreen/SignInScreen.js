@@ -64,24 +64,6 @@ const SignInScreen = () => {
         
         };
           
-
-        // try {
-        //     // Retrieve stored user credentials
-        //     const storedEmail = await AsyncStorage.getItem('userEmail');
-        //     const storedPassword = await AsyncStorage.getItem('userPassword');
-
-        //     if (storedEmail === email && storedPassword === password) {
-        //         // Sign in successful, navigate to the Home screen
-        //         navigation.navigate('Home');
-        //     } else {
-        //         console.warn('Invalid email or password. Please try again.');
-        //         setPassword('');
-        //     }
-        // } catch (error) {
-        //     console.error('Error retrieving user credentials:', error);
-        // }
-        // navigation.navigate('Home')
-    // }
     
     const onForgotPasswordPressed = () => {
         navigation.navigate('ForgotPassword')

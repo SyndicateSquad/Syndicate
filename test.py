@@ -6,18 +6,18 @@ from random import randint
 with open("confirmation_email.html", 'r') as html:
     confirmation_code_content = html.read()
 
-
+SENDGRID_API_KEY = "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"
 CONFIRMATION_CODE = randint(12345, 98765)
 
-confirmation_code_content = confirmation_code_content.replace("{{CONFIRMATION_CODE}}", CONFIRMATION_CODE)
+confirmation_code_content = confirmation_code_content.replace("{{CONFIRMATION_CODE}}", str(CONFIRMATION_CODE))
 
 message = Mail(
     from_email= 'syndicatesquad9@gmail.com',
-    to_emails= 'pranavpujar@gmail.com',
+    to_emails= 'pranav_pujar@hotmail.com',
     subject= 'Sending an email with Twilio SendGrid',
     html_content= confirmation_code_content)
 try:
-    sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+    sg = SendGridAPIClient(SENDGRID_API_KEY)
     response = sg.send(message)
     print(response.status_code)
     print(response.body)
