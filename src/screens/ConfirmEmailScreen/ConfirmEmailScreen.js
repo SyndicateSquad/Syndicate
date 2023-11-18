@@ -9,24 +9,23 @@ import CustomInput from '../../components/CustomInput/CustomInput'
 import CustomButton from '../../components/CustomButton/CustomButton'
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { CookieStorage } from 'amazon-cognito-identity-js';
 
 const ConfirmEmailScreen = () => {
 
-    const [code, setCode] = useState('');
+    const [input_code, setCode] = useState('');
     const navigation = useNavigation();
 
 // the verification email must be sent earlier, not when confirm button is pressed
 
     const onConfirmPressed = async () => {
 
-        const email = await AsyncStorage.getItem('userEmail');
+        const generatedConfirmationCode = await AsyncStorage.getItem('confirmation_code');
 
-        async function verifyConfirmationCode(url = 'http://127.0.0.1:8000/', data = { email }) {
-            
+        if (input_code !== generatedConfirmationCode){
+            console.warn("Incorrect Code");
         }
-        
-        await verifyConfirmationCode(); 
-        
+    
     };
 
     const onSignInPressed = () => {
@@ -44,7 +43,7 @@ const ConfirmEmailScreen = () => {
                 <Text style={[styles.label, { right: 60 }]}>Enter your confirmation code</Text>
                 <CustomInput
                     // placeholder='Enter your confirmation code'
-                    value={code}
+                    value={input_code}
                     setValue={setCode}
                     test='normal'
                 />

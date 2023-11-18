@@ -7,7 +7,7 @@ import Logo from '../../../assets/images/Logo.jpeg';
 import { useNavigation } from '@react-navigation/native';
 // import ImageUploader from '../../components/ImageUploader/ImageUploader';
 import SocialSignInButtons from '../../components/SocialSignInButtons/SocialSignInButtons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const SignInScreen = () => {
     const [email, setEmail] = useState('');
