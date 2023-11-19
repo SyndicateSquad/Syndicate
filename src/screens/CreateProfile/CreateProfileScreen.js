@@ -8,7 +8,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const CreateProfileScreen = () => {
 
-
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [city, setCity] = useState('');
@@ -22,18 +21,20 @@ const CreateProfileScreen = () => {
     const navigation = useNavigation();
 
     const [selected, setSelected] = useState("");
-    
-    let email = null;
-    let password = null;
-    let phone_number = null;
+
+    //use setter functions instead of let email = null and future update, for proper handling of promise
+    //and to avoid scoping issue
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [phone_number, setPhoneNumber] = useState('');
 
     useEffect(() => {
 
         const getAsyncData = async () => {
             try{
-                email = await AsyncStorage.getItem('userEmail');
-                password = await AsyncStorage.getItem('userPassword');
-                phone_number = parseInt(await AsyncStorage.getItem('userPhoneNumber'));
+                setEmail(await AsyncStorage.getItem('userEmail'));
+                setPassword(await AsyncStorage.getItem('userPassword'));
+                setPhoneNumber(parseInt(await AsyncStorage.getItem('userPhoneNumber')));
             
             } catch (error) {
                 console.error('Error: ', error);
@@ -65,8 +66,8 @@ const CreateProfileScreen = () => {
                     navigation.navigate(val);
                 }
                 else{
-                    console.warn("Error in pushing Sign Up Details to DynamoDB: ", responseData);
-                    console.warn("not working");
+                    // console.warn("Error in pushing Sign Up Details to DynamoDB: ", responseData);
+                    console.warn("This email is associated with an existing account, please navigate to sign in");
                 }
 
             } 

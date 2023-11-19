@@ -100,9 +100,11 @@ async def signup(credential: SignUpCredential):
     }
 
     try:
-        response = table.put_item(Item=item)
+        # Only put item into table if the partition (primary) does not already have an associated entry
+        response = table.put_item(Item=item, ConditionExpression= 'attribute_not_exists(PartitionKey)')
     # if email is not unique or some other issue
     except Exception as e:
+        print(e)
         return JSONResponse(content= e, status_code= 400)
     
     return JSONResponse(content= "Successfully Signed Up!", status_code= 200)
