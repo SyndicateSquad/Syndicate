@@ -19,7 +19,7 @@ const ConfirmEmailScreen = () => {
     const onConfirmPressed = async () => {
 
         const generatedConfirmationCode = await AsyncStorage.getItem('confirmation_code');
-
+        
         if (input_code !== generatedConfirmationCode){
             console.warn("Incorrect Code");
         } else {

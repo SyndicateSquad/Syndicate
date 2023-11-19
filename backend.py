@@ -33,8 +33,6 @@ app.add_middleware(
 dynamoDB = boto3.resource('dynamodb')
 s3 = boto3.resource('s3')
 
-table = dynamoDB.Table('Investor')
-
 
 class LoginCredential(BaseModel):
     email: str
@@ -67,36 +65,47 @@ async def receive_data(credential: LoginCredential):
 
 
 class SignUpCredential(BaseModel):
-    phone_number: int
     email: str
     password: str
-    repeat_password: str
+    firstName: str
+    lastName: str
+    city: str
+    state: str  
+    zipCode: int
+    country: str
+    phone_number: int
+    bio: str
+    user_type: str
+
 
 # Add Sign Up details to DynamoDB
 @app.post('/signup', response_model=bool)
 async def signup(credential: SignUpCredential):
-    # if credential.password != credential.repeat_password:
-    #     return False
-    
-    # if credential.email.split('@')[-1] not in ['gmail.com', 'yahoo.com', 'hotmail.com', 'icloud.com']:
-    #     return False
-    
-    
+
+    table = dynamoDB.Table('Users')
+
+    # be sure to intify required int variables prior to api connection
     item = {
-        'Email': credential.email.lower(),
-        'Password': credential.password,
-        'Phone_Number': credential.phone_number
+        'email': credential.email, #already applied toLower() in frontend
+        'password': credential.password,
+        'firstname': credential.firstName,
+        'lastname': credential.lastName,
+        'city': credential.city,
+        'state': credential.state,
+        'zipcode': credential.zipCode,
+        'country': credential.country,
+        'phone': credential.phone_number,
+        'bio': credential.bio,
+        'Type': credential.user_type
     }
 
     try:
         response = table.put_item(Item=item)
     # if email is not unique or some other issue
     except Exception as e:
-        print(f'DynamoDb Error: {e}')
-        return False
+        return JSONResponse(content= e, status_code= 400)
     
-    print("Successfully Signed Up!")
-    return True
+    return JSONResponse(content= "Successfully Signed Up!", status_code= 200)
     
 
 class UserEmail(BaseModel):
@@ -120,8 +129,8 @@ async def delete(user: UserEmail):
 
 
 
+# Generate Confirmation Code during Sign Up/ Forgot Password
 @app.post('/confirmation_code')
-
 async def generate_confirmation_code(user: UserEmail):
     
     with open("confirmation_email.html", 'r') as html:

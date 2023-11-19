@@ -1,31 +1,92 @@
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CustomInput from '../../components/CustomInput/CustomInput';
 import * as Progress from 'react-native-progress';
 import { useNavigation } from '@react-navigation/native';
 import { SelectList } from 'react-native-dropdown-select-list'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const CreateProfileScreen = () => {
+
+
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [city, setCity] = useState('');
     const [state, setState] = useState('');
+    const [zipCodeStr, setZipCode] = useState('');
+    let zipCode = parseInt(zipCodeStr);
     const [country, setCountry] = useState('');
-    const [zipCode, setZipCode] = useState('');
     const [bio, setBio] = useState('');
+    // let user_type = null;
 
     const navigation = useNavigation();
 
-    const [selected, setSelected] = React.useState("");
+    const [selected, setSelected] = useState("");
+    
+    let email = null;
+    let password = null;
+    let phone_number = null;
+
+    useEffect(() => {
+
+        const getAsyncData = async () => {
+            try{
+                email = await AsyncStorage.getItem('userEmail');
+                password = await AsyncStorage.getItem('userPassword');
+                phone_number = parseInt(await AsyncStorage.getItem('userPhoneNumber'));
+            
+            } catch (error) {
+                console.error('Error: ', error);
+            }
+        }
+
+        getAsyncData();
+        
+    }, []);
+    
+    // condense this into handleSelectionChange by removing outer function SignUp
+    const SignUp = async (val) => {
+        user_type = val;
+        async function pushSignUpDetails(val, url = 'http://127.0.0.1:8000/signup', data = { email, password, firstName, lastName, city, state, zipCode, country, phone_number, bio, user_type}) {
+            try {
+                console.warn(data);
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                    'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
+            
+                const responseData = await response.json();
+                // console.warn(responseData); 
+                
+                if (response.ok){
+                    navigation.navigate(val);
+                }
+                else{
+                    console.warn("Error in pushing Sign Up Details to DynamoDB: ", responseData);
+                    console.warn("not working");
+                }
+
+            } 
+            catch (error) {
+                console.error('Error:', error);
+            }
+        }
+        
+        await pushSignUpDetails(val); 
+        
+    };
 
     const handleSelectionChange = (val) => {
+        
         setSelected(val);
-        if (val === 'Developer') {
-            navigation.navigate('Developer');
-        } else if (val === 'Investor') {
-            navigation.navigate('Investor');
-        }
+        SignUp(val)
+        
     };
+
+
     const data = [
         { key: '1', value: 'Developer' },
         { key: '2', value: 'Investor' },
@@ -78,17 +139,18 @@ const CreateProfileScreen = () => {
                 <Text style={[styles.label, { right: 155 }]}>Zip Code</Text>
                 <CustomInput
                     placeholder='Zip Code'
-                    value={zipCode}
+                    value={zipCodeStr}
                     test='normal'
                     setValue={setZipCode}
-                    label='Phone-Number'
+                    label='zipcode'
                     maxLength={5}
                 />
                 <Text style={[styles.label, { right: 175 }]}>Bio</Text>
                 <CustomInput
                     placeholder='Bio'
-                    value=' '
+                    value={bio}
                     setValue={setBio}
+                    maxLength={100}
                 />
                 <SelectList
                     setSelected={(val) => handleSelectionChange(val)}

@@ -17,20 +17,7 @@ const SignInScreen = () => {
     */
     const { height } = useWindowDimensions();
     const navigation = useNavigation();
-    // const testCredentials = [
-    //     {
-    //         email: 'testuser1@example.com',
-    //         password: 'password123',
-    //     },
-    //     {
-    //         email: 'testuser2@example.com',
-    //         password: 'securePass789',
-    //     },
-    //     {
-    //         email: 'testuser3@example.com',
-    //         password: 'letmein2023',
-    //     },
-    // ];
+
 
     const onSignInPressed = async () => {
         // http://127.0.0.1 is the default socket that's used by FastAPI
@@ -69,6 +56,7 @@ const SignInScreen = () => {
         navigation.navigate('ForgotPassword')
     }
     const onSignUpPress = () => {
+        // navigation.navigate('SignUp')
         navigation.navigate('SignUp')
     }
     return (
