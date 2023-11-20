@@ -30,19 +30,20 @@ const SignUpScreen = () => {
     const navigation = useNavigation();
 
     const onRegisterPressed = async () => {
-        if (password !== passwordRepeat) {
-            console.warn('Passwords do not match. Please try again.');
-        } else {
-            try {
-                // Save user's email and password in secure storage
-                await AsyncStorage.setItem('userEmail', email);
-                await AsyncStorage.setItem('userPassword', password);
+        // if (password !== passwordRepeat) {
+        //     console.warn('Passwords do not match. Please try again.');
+        // } else {
+        //     try {
+        //         // Save user's email and password in secure storage
+        //         await AsyncStorage.setItem('userEmail', email);
+        //         await AsyncStorage.setItem('userPassword', password);
 
-                navigation.navigate('ConfirmEmail');
-            } catch (error) {
-                console.error('Error saving user credentials:', error);
-            }
-        }
+        //         navigation.navigate('ConfirmEmail');
+        //     } catch (error) {
+        //         console.error('Error saving user credentials:', error);
+        //     }
+        // }
+        navigation.navigate('ConfirmEmail');
     }
     const onSignInPressed = () => {
         navigation.navigate('SignIn')

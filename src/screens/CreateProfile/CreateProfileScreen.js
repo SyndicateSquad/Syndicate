@@ -53,7 +53,7 @@ const CreateProfileScreen = () => {
             >
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                     <View style={styles.root}>
-                        <Progress.Bar progress={0.3} width={415} />
+                        <Progress.Bar progress={0.5} width={415} />
                         <Text style={styles.title}>
                             Create Your Profile
                         </Text>

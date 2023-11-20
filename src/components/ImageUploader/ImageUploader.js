@@ -3,7 +3,7 @@ import { View, Button, Image, StyleSheet, ScrollView } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
 export default function ImageUploader() {
-    const [images, setImages] = useState([null, null, null, null, null, null]);
+    const [images, setImages] = useState([null]);
 
     useEffect(() => {
         (async () => {

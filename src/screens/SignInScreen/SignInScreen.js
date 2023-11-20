@@ -81,9 +81,6 @@ const SignInScreen = () => {
     const onSignUpPress = () => {
         navigation.navigate('SignUp')
     }
-    const onHome = () => {
-        navigation.navigate('Home')
-    }
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.root}>
@@ -108,9 +105,6 @@ const SignInScreen = () => {
                     secureTextEntry
                     label="Password"
                     test='normal'
-                />
-                <CustomButton 
-                    onPress={onHome}
                 />
                 <CustomButton
                     text="Sign in"

@@ -5,7 +5,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 const App = () => {
-  // Auth.signIn();
   return (
     <SafeAreaView style={styles.root}>
       <Navigation />
