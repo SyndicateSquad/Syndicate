@@ -39,7 +39,7 @@ class LoginCredential(BaseModel):
     password: str
 
 # Check for login credential validity
-@app.post('/login', response_model=bool)
+@app.post('/login')
 async def receive_data(credential: LoginCredential):
     # Process the data
     table = dynamoDB.Table('Investor')
@@ -79,12 +79,11 @@ class SignUpCredential(BaseModel):
 
 
 # Add Sign Up details to DynamoDB
-@app.post('/signup', response_model=bool)
+@app.post('/signup')
 async def signup(credential: SignUpCredential):
 
     table = dynamoDB.Table('Users')
 
-    # be sure to intify required int variables prior to api connection
     item = {
         'email': credential.email, #already applied toLower() in frontend
         'password': credential.password,
@@ -102,9 +101,8 @@ async def signup(credential: SignUpCredential):
     try:
         # Only put item into table if the partition (primary) does not already have an associated entry
         response = table.put_item(Item=item, ConditionExpression= 'attribute_not_exists(email)')
-    
+
     except Exception as e:
-        # if email is not unique or some other issue
         if "ConditionalCheckFailedException" in str(e):
             return JSONResponse(content= "Email already exists, navigate to sign in", status_code=400)
         else:
@@ -116,8 +114,26 @@ async def signup(credential: SignUpCredential):
 class UserEmail(BaseModel):
     email: str
     
+@app.post('/verify_email_dne')
+
+def verify_email_dne(user: UserEmail):
+    
+    table = dynamoDB.Table('Users')
+    
+    item = {'email': credential.email}
+    
+    try:
+        response = table.put_item(Item=item, ConditionExpression= 'attribute_not_exists(email)')
+    except Exception as e:
+        if "ConditionalCheckFailedException" in str(e):
+            return JSONResponse(content= "Email already exists, navigate to sign in", status_code=400)
+        else:
+            return JSONResponse(content= str(e), status_code=400)
+        
+    return JSONResponse(content= "Email does not exist in records", status_code=200)
+
 # Handle Delete User Request
-@app.post('/delete_user', response_model=bool)
+@app.post('/delete_user')
 async def delete(user: UserEmail):
     
     primary_key = {'Email': user.email.lower()}
