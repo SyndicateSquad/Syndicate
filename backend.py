@@ -5,12 +5,13 @@ import json
 from random import randint
 from decimal import Decimal
 from boto3.dynamodb.conditions import Key
-from fastapi import FastAPI
+from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from fastapi.responses import JSONResponse
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
+from botocore.exceptions import NoCredentialsError
 
 
 app = FastAPI()
@@ -173,17 +174,32 @@ async def generate_confirmation_code(user: UserEmail):
     return JSONResponse(content= str(CONFIRMATION_CODE), status_code=200)
 
 
+@app.post('/upload')
+async def upload_to_s3(file: UploadFile = File(...)):
+    try:
+        s3.upload_fileobj(
+            file.file,
+            "syndicateimages",
+            file.filename,
+            ExtraArgs={
+                "ACL": "public-read",
+                "ContentType": file.content_type
+            }
+        )
+        return {"message": "Successfully uploaded"}
+    except NoCredentialsError:
+        return {"message": "Credentials not available"}
+    
+# # Receive the Investor's (User's) email id, get the preferences, sort ALL property listings based on preferences, return order of properties by ID
+# @app.post('/property_swipe_list')
+# async def get_property_swipe_list(investor: UserEmail):
 
-# Receive the Investor's (User's) email id, get the preferences, sort ALL property listings based on preferences, return order of properties by ID
-@app.post('/property_swipe_list')
-async def get_property_swipe_list(investor: UserEmail):
+#     # get minimum investment preference of the investor
+#     key_condition_expression = Key('Email').eq(email)
+#     table = dynamoDB.Table('Investor')
+#     response = table.query(
+#         KeyConditionExpression=key_condition_expression
+#     )
+#     min_investment = response['Items'][0]['Min_Investment']
 
-    # get minimum investment preference of the investor
-    key_condition_expression = Key('Email').eq(email)
-    table = dynamoDB.Table('Investor')
-    response = table.query(
-        KeyConditionExpression=key_condition_expression
-    )
-    min_investment = response['Items'][0]['Min_Investment']
-
-    # sort property listings by min investment asc and return 
+#     # sort property listings by min investment asc and return 
