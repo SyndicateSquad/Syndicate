@@ -3,7 +3,9 @@ import React, { useState } from 'react';
 import CustomInput from '../../components/CustomInput/CustomInput';
 import * as Progress from 'react-native-progress';
 import { useNavigation } from '@react-navigation/native';
-import { MultipleSelectList } from 'react-native-dropdown-select-list'
+// import { MultipleSelectList } from 'react-native-dropdown-select-list'
+import { SelectList } from 'react-native-dropdown-select-list'
+import ImageUploader from '../../components/ImageUploader/ImageUploader'
 import CustomButton from '../../components/CustomButton/CustomButton';
 const InvestorProfile = () => {
     const [bio, setBio] = useState('');
@@ -31,57 +33,71 @@ const InvestorProfile = () => {
         { key: '5', value: '200,000 - 500,000 sq ft' },
         { key: '6', value: '500,000+ sq ft' }
     ]
-    const navigation = useNavigation();
+    const navigation = useNavigation()
     const handleNextButtonPress = () => {
-        navigation.navigate('PicturesForProperty');
+        navigation.navigate('Home')
     }
     return (
         <ScrollView>
             <View style={styles.root}>
-                <Progress.Bar progress={0.6} width={415} />
+                <Progress.Bar progress={0.9} width={415} />
                 <Text style={styles.title}>
                     Add Your Property
                 </Text>
-                <Text style={[styles.label, { right: 130 }]}>Property Type</Text>
+                {/* <Text style={[styles.label, { right: 130 }]}>Property Type</Text>
                 <MultipleSelectList
                     setSelected={(val) => setSelected(val)}
                     data={propertyType}
                     placeholder='               Select Property Type               '
                     maxHeight={250}
-                />
-                <Text style={[styles.label, { right: 175 }]}>Bio</Text>
+                /> */}
+                {/* <Text style={[styles.label, { right: 175 }, {paddingTop: 50}]}>Bio</Text>
                 <CustomInput
                     placeholder='Bio'
                     value=' '
                     setValue={setBio}
-                />
-                <Text style={[styles.label, { right: 100 }]}>Property Price Range</Text>
-                <MultipleSelectList
+                /> */}
+                <Text style={[styles.label, { right: 100 }, { paddingBottom: 10 }]}>Minimum Investment</Text>
+                <SelectList
                     setSelected={(val) => setSelected(val)}
                     data={priceRange}
-                    placeholder='               Select Price Range                  '
+                    placeholder='Select Minimum Investment Range'
                     maxHeight={300}
                 />
-                <Text style={[styles.label, { right: 135 }]}>Property size</Text>
+                {/* <Text style={[styles.label, { right: 135 }]}>Property size</Text>
                 <MultipleSelectList
                     setSelected={(val) => setSelected(val)}
                     data={propertySize}
                     placeholder='                       Property Size                    '
                     maxHeight={300}
-                />
-                <Text style={[styles.label, { right: 150 }]}>Location</Text>
+                /> */}
+                <Text style={[styles.label, { right: 167 }, { paddingTop: 30 }]}>City</Text>
                 <CustomInput
                     placeholder='Country'
                     value={country}
                     test='normal'
                     setValue={setCountry}
                 />
-                <CustomButton
-                    text="Next"
-                    onPress={handleNextButtonPress} // Call handleNextButtonPress when the button is pressed
+                <Text style={[styles.label, { right: 150 }]}>Country</Text>
+                <CustomInput
+                    placeholder='Country'
+                    value={country}
+                    test='normal'
+                    setValue={setCountry}
                 />
+                <View style={styles.next}>
+                    <CustomButton
+                        text="Next"
+                        onPress={handleNextButtonPress}
+                        style={styles.next}
+                    />
+                </View>
+                <View style={styles.imageU}>
+                    <ImageUploader />
+                </View>
+
             </View>
-        </ScrollView>
+        </ScrollView >
 
     );
 }
@@ -90,12 +106,15 @@ const styles = StyleSheet.create({
     root: {
         paddingTop: '18%',
         width: 'auto',
-        borderColor: '#e8e8e8',
+        borderColor: 'transparent',
         borderWidth: 1,
         borderRadius: 10,
         paddingHorizontal: 10,
         marginVertical: 5,
         alignItems: 'center',
+    },
+    imageU: {
+        top: -125,
     },
     title: {
         paddingBottom: '4%',
@@ -111,6 +130,16 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 100,
         marginBottom: 5,
+    },
+    next: {
+        top: 275,
+        width: '100%',
+
+        padding: 15,
+        marginVertical: 5,
+
+        alignItems: 'center',
+        borderRadius: 5,
     },
 });
 

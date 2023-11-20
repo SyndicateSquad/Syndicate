@@ -21,6 +21,22 @@ const SignUpScreen = () => {
     const allowedDomains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'icloud.com', 'outlook.com'];
 
     const onRegisterPressed = async () => {
+        // if (password !== passwordRepeat) {
+        //     console.warn('Passwords do not match. Please try again.');
+        // } else {
+        //     try {
+        //         // Save user's email and password in secure storage
+        //         await AsyncStorage.setItem('userEmail', email);
+        //         await AsyncStorage.setItem('userPassword', password);
+
+        //         navigation.navigate('ConfirmEmail');
+        //     } catch (error) {
+        //         console.error('Error saving user credentials:', error);
+        //     }
+        // }
+        navigation.navigate('ConfirmEmail');
+    }
+
         
         // const email = await AsyncStorage.getItem('userEmail');
         let valid_flag = true;
@@ -117,8 +133,6 @@ const SignUpScreen = () => {
         }
         
     };
-    
-  
     const onSignInPressed = () => {
         navigation.navigate('SignIn')
     }

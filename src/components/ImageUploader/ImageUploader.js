@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, Image, StyleSheet, ScrollView } from 'react-native';
+import { View, Button, Image, StyleSheet, ScrollView } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
 export default function ImageUploader() {
-    const [images, setImages] = useState([null, null, null, null, null, null]);
+    const [images, setImages] = useState([null]);
 
     useEffect(() => {
         (async () => {
@@ -29,9 +29,9 @@ export default function ImageUploader() {
         }
     };
     
+
     // add code to connect to backend.py
     // const
-    
     return (
         <ScrollView style={styles.container}>
             <View style={styles.imageGrid}>

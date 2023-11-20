@@ -14,6 +14,7 @@ const SignInScreen = () => {
     const [password, setPassword] = useState('');
     /*
     TODO: add google sign + apple sign in 
+
     */
     const { height } = useWindowDimensions();
     const navigation = useNavigation();

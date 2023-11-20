@@ -6,15 +6,13 @@ import SignUpScreen from '../screens/SignUpScreen/SignUpScreen';
 import ForgotPasswordScreen from '../screens/ForgotPasswordScreen/ForgotPasswordScreen';
 import ConfirmEmailScreen from '../screens/ConfirmEmailScreen/ConfirmEmailScreen';
 import NewPasswordScreen from '../screens/NewPasswordScreen/NewPasswordScreen';
-import HomeScreen from '../screens/HomeScreen/Index'
+import HomeScreen from '../screens/HomeScreen/HomeScreen';
 import ImageUploader from '../components/ImageUploader/ImageUploader';
 import SocialSignInButtons from '../components/SocialSignInButtons/SocialSignInButtons';
 import SocialSignUp from '../screens/SignUpScreen/SocialSignUp';
 import CreateProfileScreen from '../screens/CreateProfile/CreateProfileScreen';
 import DeveloperProfile from '../screens/CreateProfile/DeveloperProfile';
 import InvestorProfile from '../screens/CreateProfile/InvestorProfile';
-import InvestorPicture from '../screens/CreateProfile/InvestorPicture';
-import DeveloperPictures from '../screens/CreateProfile/DeveloperPictures';
 const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
@@ -33,8 +31,6 @@ const Navigation = () => {
         <Stack.Screen name="CreateProfile" component={CreateProfileScreen} />
         <Stack.Screen name="Developer" component={DeveloperProfile} />
         <Stack.Screen name="Investor" component={InvestorProfile} />
-        <Stack.Screen name="PictureForInvestor" component={InvestorPicture} />
-        <Stack.Screen name="PicturesForProperty" component={DeveloperPictures} />
       </Stack.Navigator>
     </NavigationContainer>
   )
