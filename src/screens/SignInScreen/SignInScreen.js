@@ -12,9 +12,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const SignInScreen = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    /*
-    TODO: change the login credentials to email instead of username
-    TODO: add google sign + apple sign in 
+    
+   /* TODO: add google sign + apple sign in 
     */
     const { height } = useWindowDimensions();
     const navigation = useNavigation();
@@ -82,6 +81,9 @@ const SignInScreen = () => {
     const onSignUpPress = () => {
         navigation.navigate('SignUp')
     }
+    const onHome = () => {
+        navigation.navigate('Home')
+    }
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.root}>
@@ -106,6 +108,9 @@ const SignInScreen = () => {
                     secureTextEntry
                     label="Password"
                     test='normal'
+                />
+                <CustomButton 
+                    onPress={onHome}
                 />
                 <CustomButton
                     text="Sign in"

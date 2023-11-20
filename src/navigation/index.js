@@ -6,7 +6,7 @@ import SignUpScreen from '../screens/SignUpScreen/SignUpScreen';
 import ForgotPasswordScreen from '../screens/ForgotPasswordScreen/ForgotPasswordScreen';
 import ConfirmEmailScreen from '../screens/ConfirmEmailScreen/ConfirmEmailScreen';
 import NewPasswordScreen from '../screens/NewPasswordScreen/NewPasswordScreen';
-import HomeScreen from '../screens/HomeScreen/Index'
+import HomeScreen from '../screens/HomeScreen/HomeScreen';
 import ImageUploader from '../components/ImageUploader/ImageUploader';
 import SocialSignInButtons from '../components/SocialSignInButtons/SocialSignInButtons';
 import SocialSignUp from '../screens/SignUpScreen/SocialSignUp';

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, Image, StyleSheet, ScrollView } from 'react-native';
+import { View, Button, Image, StyleSheet, ScrollView } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
 export default function ImageUploader() {
@@ -28,6 +28,7 @@ export default function ImageUploader() {
             setImages(newImages);
         }
     };
+    
 
     return (
         <ScrollView style={styles.container}>
