@@ -67,7 +67,7 @@ const CreateProfileScreen = () => {
                 }
                 else{
                     // console.warn("Error in pushing Sign Up Details to DynamoDB: ", responseData);
-                    console.warn("This email is associated with an existing account, please navigate to sign in");
+                    console.warn(responseData);
                 }
 
             } 
