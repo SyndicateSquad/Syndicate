@@ -28,7 +28,10 @@ export default function ImageUploader() {
             setImages(newImages);
         }
     };
-
+    
+    // add code to connect to backend.py
+    // const
+    
     return (
         <ScrollView style={styles.container}>
             <View style={styles.imageGrid}>

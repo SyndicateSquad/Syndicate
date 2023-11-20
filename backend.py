@@ -70,7 +70,7 @@ class SignUpCredential(BaseModel):
     firstName: str
     lastName: str
     city: str
-    state: str  
+    state: str
     zipCode: int
     country: str
     phone_number: int
@@ -143,8 +143,6 @@ async def delete(user: UserEmail):
         return False
     
     return True
-
-
 
 # Generate Confirmation Code during Sign Up/ Forgot Password
 @app.post('/confirmation_code')

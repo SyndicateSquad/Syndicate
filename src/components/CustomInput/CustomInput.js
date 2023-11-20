@@ -1,7 +1,7 @@
 import { View, Text, TextInput, StyleSheet } from 'react-native'
 import React from 'react'
 
-const CustomInput = ({ value, setValue, placeholder, secureTextEntry, label, test, maxLength, onChangeText}) => {
+const CustomInput = ({ value, setValue, placeholder, secureTextEntry, label, test, maxLength}) => {
     let keyboardType = 'default';
     let inputStyles = [styles.input]; // Create an array of styles
 
@@ -24,7 +24,7 @@ const CustomInput = ({ value, setValue, placeholder, secureTextEntry, label, tes
         <View style={styles.container}>
             <TextInput
                 value={value}
-                onChangeText={onChangeText}
+                onChangeText={setValue}
                 placeholder={placeholder}
                 style={inputStyles}
                 secureTextEntry={secureTextEntry}

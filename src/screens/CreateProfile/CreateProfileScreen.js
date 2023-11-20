@@ -109,7 +109,6 @@ const CreateProfileScreen = () => {
                     test='normal'
                     setValue={setFirstName}
                     maxLength={40}
-
                 />
                 <Text style={[styles.label, { right: 140 }]}>Last Name</Text>
                 <CustomInput
@@ -132,9 +131,8 @@ const CreateProfileScreen = () => {
                     placeholder='State'
                     value={state}
                     test='normal'
-                    setValue={setState}
+                    setValue={(input) => capitalizeContent(input)}
                     maxLength={2}
-                    onChangeText={(input) => capitalizeContent(input)}
                 />
                 <Text style={[styles.label, { right: 155 }]}>Country</Text>
                 <CustomInput
@@ -142,6 +140,7 @@ const CreateProfileScreen = () => {
                     value={country}
                     test='normal'
                     setValue={setCountry}
+                    maxLength={20}
                 />
                 <Text style={[styles.label, { right: 155 }]}>Zip Code</Text>
                 <CustomInput
