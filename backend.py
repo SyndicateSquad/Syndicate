@@ -100,13 +100,10 @@ async def signup(credential: SignUpCredential):
 
     try:
         # Only put item into table if the partition (primary) does not already have an associated entry
-        response = table.put_item(Item=item, ConditionExpression= 'attribute_not_exists(email)')
+        response = table.put_item(Item=item)
 
     except Exception as e:
-        if "ConditionalCheckFailedException" in str(e):
-            return JSONResponse(content= "Email already exists, navigate to sign in", status_code=400)
-        else:
-            return JSONResponse(content= str(e), status_code=400)
+        return JSONResponse(content= str(e), status_code=400)
 
     return JSONResponse(content= "Successfully Signed Up!", status_code= 200)
     
@@ -115,12 +112,11 @@ class UserEmail(BaseModel):
     email: str
     
 @app.post('/verify_email_dne')
-
 def verify_email_dne(user: UserEmail):
     
     table = dynamoDB.Table('Users')
     
-    item = {'email': credential.email}
+    item = {'email': user.email}
     
     try:
         response = table.put_item(Item=item, ConditionExpression= 'attribute_not_exists(email)')

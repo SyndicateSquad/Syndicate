@@ -21,31 +21,61 @@ const SignUpScreen = () => {
     const allowedDomains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'icloud.com', 'outlook.com'];
 
     const onRegisterPressed = async () => {
-
+        
         // const email = await AsyncStorage.getItem('userEmail');
-        let valid_flag = false;
+        let valid_flag = true;
+        
+        async function verifyEmailDNE(url = 'http://127.0.0.1:8000/verify_email_dne', data = { email }) {
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                    'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
+                
+                const responseData = await response.json(); 
+
+                if (response.ok){
+                    console.log("New Email Detected")
+                } else {
+                    console.error("Error: ", responseData);
+                    navigation.navigate('SignIn');
+
+                    valid_flag = false; //probably does not matter lol
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
 
         async function validateEntries() {
 
             if (password !== passwordRepeat) {
                 console.warn('Passwords do not match. Please try again.');
+                valid_flag = false;
 
             } else if (phoneNumber.trim() === "" || email.trim() === "" || password.trim() === ""){
                 console.warn("Please fill in all fields")
+                valid_flag = false;
                 
             } else if (!allowedDomains.includes(email.split('@')[1])){
                 console.warn("Invalid Email");
-
+                valid_flag = false;
+                
             }else {
                 try {
                     // Save user's email and password in secure storage
                     await AsyncStorage.setItem('userEmail', email);
                     await AsyncStorage.setItem('userPassword', password);
                     await AsyncStorage.setItem('userPhoneNumber', phoneNumber);
-                    valid_flag = true;
+                    // valid_flag = true;
                 } 
                 catch (error) {
                     console.error('Error saving user credentials:', error);
+                    valid_flag = false;
                 }
             }    
                   
@@ -62,7 +92,7 @@ const SignUpScreen = () => {
                 });
                 
                 //receive the random-generated confirmation code from backend
-                const generated_conf_code = await response.json(); 
+                const generated_conf_code = await response.json();
                 await AsyncStorage.setItem('confirmation_code', generated_conf_code);
 
                 if (response.ok){
@@ -78,7 +108,9 @@ const SignUpScreen = () => {
             }
         }
         
-        await validateEntries(); //sets flag to true if input is valid
+        await verifyEmailDNE();
+        await validateEntries(); 
+        //flag is set to false by now if any test case fails
         if (valid_flag){
             //navigation to next screen is within this function
             await sendConfirmationCode(); 
