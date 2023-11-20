@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Confirmation</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #ffffff; /* White background */
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .header {
+            background-color: #3498db; /* Blue color for the header */
+            color: #ffffff;
+            padding: 20px;
+        }
+
+        .content {
+            padding: 30px;
+            text-align: left;
+            color: #333333;
+        }
+
+        .confirmation-code {
+            font-size: 24px;
+            font-weight: bold;
+            color: #3498db; /* Blue color for confirmation code */
+        }
+
+        .instructions {
+            margin-top: 20px;
+        }
+
+        .footer {
+            background-color: #ffefff;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Email Confirmation</h1>
+        </div>
+        <div class="content">
+            <p>Thank you for signing up! Your confirmation code is:</p>
+            <p class="confirmation-code">{{CONFIRMATION_CODE}}</p>
+            <div class="instructions">
+                <p>Please use the code to complete your registration process.</p>
+            </div>
+        </div>
+        <div class="footer">
+            <p>If you didn't sign up for this service, please ignore this email.</p>
+        </div>
+    </div>
+</body>
+
+</html>

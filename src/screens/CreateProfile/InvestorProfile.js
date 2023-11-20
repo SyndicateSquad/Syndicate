@@ -7,15 +7,17 @@ import { MultipleSelectList } from 'react-native-dropdown-select-list'
 import CustomButton from '../../components/CustomButton/CustomButton';
 import { SelectList } from 'react-native-dropdown-select-list'
 import ImageUploader from '../../components/ImageUploader/ImageUploader'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const InvestorProfile = () => {
-    const [country, setCountry] = useState('');
+    const [latitude, setLatitude] = useState('');
+    const [longitude, setLongitude] = useState('');
     const [selected, setSelected] = React.useState([]);
     const propertyType = [
         { key: '1', value: 'Commercial' },
         { key: '2', value: 'Residential' },
         { key: '3', value: 'Hospitality' },
-        { key: '4', value: 'Industrial', },
+        { key: '4', value: 'Industrial' },
     ]
     const priceRange = [
         { key: '1', value: '$0 - $50,000' },

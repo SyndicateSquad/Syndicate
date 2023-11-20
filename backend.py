@@ -1,13 +1,17 @@
 # Importing AWS SDK for Python and other helper libraries
-
+import os
 import boto3
-from decimal import Decimal
 import json
+from random import randint
+from decimal import Decimal
 from boto3.dynamodb.conditions import Key
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from fastapi.responses import JSONResponse
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+
 
 app = FastAPI()
 
@@ -16,7 +20,6 @@ origins = [
     "https://10.182.149.211:8000",
     "exp://10.182.149.211:8000",  # This is for Expo
 ]
-
 
 app.add_middleware(
     CORSMiddleware,
@@ -28,7 +31,7 @@ app.add_middleware(
 
 
 dynamoDB = boto3.resource('dynamodb')
-table = dynamoDB.Table('Investor')
+s3 = boto3.resource('s3')
 
 
 class LoginCredential(BaseModel):
@@ -36,7 +39,7 @@ class LoginCredential(BaseModel):
     password: str
 
 # Check for login credential validity
-@app.post('/login', response_model=bool)
+@app.post('/login')
 async def receive_data(credential: LoginCredential):
     # Process the data
     table = dynamoDB.Table('Investor')
@@ -56,50 +59,77 @@ async def receive_data(credential: LoginCredential):
     if len(response['Items']) > 0:
         if credential.password == response['Items'][0]['Password']:
             # return True 
-            return JSONResponse(content=[1,2,3,4], status_code=200)
+            return JSONResponse(content=True, status_code=200)
     # return False
     return JSONResponse(content=False, status_code=400)
 
 
 class SignUpCredential(BaseModel):
-    phone_number: int
     email: str
     password: str
-    repeat_password: str
+    firstName: str
+    lastName: str
+    city: str
+    state: str
+    zipCode: int
+    country: str
+    phone_number: int
+    bio: str
+    user_type: str
+
 
 # Add Sign Up details to DynamoDB
-@app.post('/signup', response_model=bool)
+@app.post('/signup')
 async def signup(credential: SignUpCredential):
-    # if credential.password != credential.repeat_password:
-    #     return False
-    
-    # if credential.email.split('@')[-1] not in ['gmail.com', 'yahoo.com', 'hotmail.com', 'icloud.com']:
-    #     return False
-    
-    
+
+    table = dynamoDB.Table('Users')
+
     item = {
-        'Email': credential.email.lower(),
-        'Password': credential.password,
-        'Phone_Number': credential.phone_number
+        'email': credential.email, #already applied toLower() in frontend
+        'password': credential.password,
+        'firstname': credential.firstName,
+        'lastname': credential.lastName,
+        'city': credential.city,
+        'state': credential.state,
+        'zipcode': credential.zipCode,
+        'country': credential.country,
+        'phone': credential.phone_number,
+        'bio': credential.bio,
+        'Type': credential.user_type
     }
 
     try:
+        # Only put item into table if the partition (primary) does not already have an associated entry
         response = table.put_item(Item=item)
-    # if email is not unique or some other issue
-    except Exception as e:
-        print(f'DynamoDb Error: {e}')
-        return False
-    
-    print("Successfully Signed Up!")
-    return True
-    
 
+    except Exception as e:
+        return JSONResponse(content= str(e), status_code=400)
+
+    return JSONResponse(content= "Successfully Signed Up!", status_code= 200)
+    
 
 class UserEmail(BaseModel):
     email: str
     
+@app.post('/verify_email_dne')
+def verify_email_dne(user: UserEmail):
+    
+    table = dynamoDB.Table('Users')
+    
+    item = {'email': user.email}
+    
+    try:
+        response = table.put_item(Item=item, ConditionExpression= 'attribute_not_exists(email)')
+    except Exception as e:
+        if "ConditionalCheckFailedException" in str(e):
+            return JSONResponse(content= "Email already exists, navigate to sign in", status_code=400)
+        else:
+            return JSONResponse(content= str(e), status_code=400)
+        
+    return JSONResponse(content= "Email does not exist in records", status_code=200)
+
 # Handle Delete User Request
-@app.post('/delete_user', response_model=bool)
+@app.post('/delete_user')
 async def delete(user: UserEmail):
     
     primary_key = {'Email': user.email.lower()}
@@ -114,12 +144,36 @@ async def delete(user: UserEmail):
     
     return True
 
+# Generate Confirmation Code during Sign Up/ Forgot Password
+@app.post('/confirmation_code')
+async def generate_confirmation_code(user: UserEmail):
+    
+    with open("confirmation_email.html", 'r') as html:
+        confirmation_email_content = html.read()
+
+    CONFIRMATION_CODE = randint(12345, 98765)
+
+    confirmation_email_content = confirmation_email_content.replace("{{CONFIRMATION_CODE}}", str(CONFIRMATION_CODE))
+
+    message = Mail(
+        from_email= 'syndicatesquad9@gmail.com',
+        to_emails= user.email,
+        subject= 'Syndicate - Confirmation Email',
+        html_content= confirmation_email_content)
+
+    try:
+        sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+        response = sg.send(message)
+
+    except Exception as e:
+        return JSONResponse(content=f'Error: {e}', status_code=400)
+    
+    return JSONResponse(content= str(CONFIRMATION_CODE), status_code=200)
+
+
 
 # Receive the Investor's (User's) email id, get the preferences, sort ALL property listings based on preferences, return order of properties by ID
-
-
 @app.post('/property_swipe_list')
-
 async def get_property_swipe_list(investor: UserEmail):
 
     # get minimum investment preference of the investor
