@@ -1,13 +1,13 @@
 import { View, Text, TextInput, StyleSheet } from 'react-native'
 import React from 'react'
 
-const CustomInput = ({ value, setValue, placeholder, secureTextEntry, label, test, maxLength }) => {
+const CustomInput = ({ value, setValue, placeholder, secureTextEntry, label, test, maxLength}) => {
     let keyboardType = 'default';
     let inputStyles = [styles.input]; // Create an array of styles
 
     if (label === 'Email') {
         keyboardType = 'email-address';
-    } else if (label === 'Phone-Number') {
+    } else if (label === 'Phone-Number' || label === 'zipcode') {
         keyboardType = 'numeric';
     }
 
