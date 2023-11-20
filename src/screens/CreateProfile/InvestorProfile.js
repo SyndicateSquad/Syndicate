@@ -5,14 +5,18 @@ import * as Progress from 'react-native-progress';
 import { useNavigation } from '@react-navigation/native';
 import { MultipleSelectList } from 'react-native-dropdown-select-list'
 import CustomButton from '../../components/CustomButton/CustomButton';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
 const InvestorProfile = () => {
-    const [country, setCountry] = useState('');
+    const [latitude, setLatitude] = useState('');
+    const [longitude, setLongitude] = useState('');
     const [selected, setSelected] = React.useState([]);
     const propertyType = [
         { key: '1', value: 'Commercial' },
         { key: '2', value: 'Residential' },
         { key: '3', value: 'Hospitality' },
-        { key: '4', value: 'Industrial', },
+        { key: '4', value: 'Industrial' },
     ]
     const priceRange = [
         { key: '1', value: '$0 - $50,000' },
@@ -77,12 +81,19 @@ const InvestorProfile = () => {
                     placeholder='      Select Your Desired Property Size     '
                     maxHeight={300}
                 />
-                <Text style={[styles.label, { right: 150 }]}>Location</Text>
+                <Text style={[styles.label, { right: 150 }]}>Latitude</Text>
                 <CustomInput
-                    placeholder='Country'
-                    value={country}
+                    placeholder='Latitude'
+                    value={latitude}
                     test='normal'
-                    setValue={setCountry}
+                    setValue={setLatitude}
+                />
+                <Text style={[styles.label, { right: 150 }]}>Longitude</Text>
+                <CustomInput
+                    placeholder='Longitude'
+                    value={longitude}
+                    test='normal' //can this also be normal??
+                    setValue={setLongitude}
                 />
                 <CustomButton
                     text="Next"

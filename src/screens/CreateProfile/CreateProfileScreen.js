@@ -50,7 +50,6 @@ const CreateProfileScreen = () => {
         user_type = val;
         async function pushSignUpDetails(val, url = 'http://127.0.0.1:8000/signup', data = { email, password, firstName, lastName, city, state, zipCode, country, phone_number, bio, user_type}) {
             try {
-                console.warn(data);
                 const response = await fetch(url, {
                     method: 'POST',
                     headers: {
