@@ -86,6 +86,9 @@ const CreateProfileScreen = () => {
         
     };
 
+    const capitalizeContent = (input) => {
+        setState(input.toUpperCase());
+    }
 
     const data = [
         { key: '1', value: 'Developer' },
@@ -99,14 +102,14 @@ const CreateProfileScreen = () => {
                 <Text style={styles.title}>
                     Create Your Profile
                 </Text>
-                <Text style={[styles.label, { right: 140 }]}>
-                    First Name
-                </Text>
+                <Text style={[styles.label, { right: 140 }]}>First Name</Text>
                 <CustomInput
                     // placeholder='First Name'
                     value={firstName}
                     test='normal'
                     setValue={setFirstName}
+                    maxLength={40}
+
                 />
                 <Text style={[styles.label, { right: 140 }]}>Last Name</Text>
                 <CustomInput
@@ -114,6 +117,7 @@ const CreateProfileScreen = () => {
                     value={lastName}
                     test='normal'
                     setValue={setLastName}
+                    maxLength={40}
                 />
                 <Text style={[styles.label, { right: 170 }]}>City</Text>
                 <CustomInput
@@ -121,6 +125,7 @@ const CreateProfileScreen = () => {
                     value={city}
                     test='normal'
                     setValue={setCity}
+                    maxLength={25}
                 />
                 <Text style={[styles.label, { right: 165 }]}>State</Text>
                 <CustomInput
@@ -128,6 +133,8 @@ const CreateProfileScreen = () => {
                     value={state}
                     test='normal'
                     setValue={setState}
+                    maxLength={2}
+                    onChangeText={(input) => capitalizeContent(input)}
                 />
                 <Text style={[styles.label, { right: 155 }]}>Country</Text>
                 <CustomInput
@@ -138,7 +145,7 @@ const CreateProfileScreen = () => {
                 />
                 <Text style={[styles.label, { right: 155 }]}>Zip Code</Text>
                 <CustomInput
-                    placeholder='Zip Code'
+                    placeholder='Zip-Code'
                     value={zipCodeStr}
                     test='normal'
                     setValue={setZipCode}

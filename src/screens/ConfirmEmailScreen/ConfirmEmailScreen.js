@@ -79,6 +79,7 @@ const ConfirmEmailScreen = () => {
                     setValue={(numericCode) => setCode(numericCode.replace(/[^0-9]/g, '').slice(0, 10), 10)}
                     keyboardType = 'numeric'
                     test='normal'
+                    maxLength={5}
                 />
                 <CustomButton
                     text="Confirm"
