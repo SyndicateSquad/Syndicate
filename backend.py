@@ -5,7 +5,7 @@ import json
 from random import randint
 from decimal import Decimal
 from boto3.dynamodb.conditions import Key
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from fastapi.responses import JSONResponse
@@ -177,18 +177,20 @@ async def generate_confirmation_code(user: UserEmail):
 @app.post('/upload')
 async def upload_to_s3(file: UploadFile = File(...)):
     try:
-        s3.upload_fileobj(
+        # Specify the bucket name
+        bucket_name = 'syndicateimages'
+
+        # Upload the file to the S3 bucket without setting ACL
+        s3.Bucket(bucket_name).upload_fileobj(
             file.file,
-            "syndicateimages",
             file.filename,
             ExtraArgs={
-                "ACL": "public-read",
                 "ContentType": file.content_type
             }
         )
-        return {"message": "Successfully uploaded"}
-    except NoCredentialsError:
-        return {"message": "Credentials not available"}
+        return JSONResponse(content={"message": "Successfully uploaded"})
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f'Error: {e}')
     
 # # Receive the Investor's (User's) email id, get the preferences, sort ALL property listings based on preferences, return order of properties by ID
 # @app.post('/property_swipe_list')

@@ -57,7 +57,7 @@ const SignInScreen = () => {
     }
     const onSignUpPress = () => {
         // navigation.navigate('SignUp')
-        navigation.navigate('SignUp')
+        navigation.navigate('Developer')
     }
     return (
         <ScrollView showsVerticalScrollIndicator={false}>

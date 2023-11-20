@@ -1,11 +1,12 @@
 import { View, Text, StyleSheet } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import ImageUploader from '../../components/ImageUploader/ImageUploader'
 import * as Progress from 'react-native-progress';
 import { useNavigation } from '@react-navigation/native';
 import CustomButton from '../../components/CustomButton/CustomButton';
-import uploadImagesToApi from '../../components/uploadImagesToApi/uploadImagesToApi'
+import { uploadImagesToApi } from '../../components/uploadImagesToApi/uploadImagesToApi';
 const DeveloperPictures = () => {
+    const [images, setImages] = useState([null, null, null, null, null, null]);
     const navigation = useNavigation();
     const handleNextButtonPress = async () => {
         // Check if at least one image has been selected
@@ -13,9 +14,10 @@ const DeveloperPictures = () => {
           
         if (atLeastOneImageSelected) {
             // At least one image is selected, proceed with uploading
+            const nonNullImages = images.filter(image => image !== null);
             try {
             // Call your image upload function and wait for it to finish
-            await uploadImagesToApi(images.filter(image => image !== null));
+            await uploadImagesToApi(nonNullImages);
             // After a successful upload, navigate to the 'Home' screen
             navigation.navigate('Home');
             } catch (error) {
@@ -32,7 +34,7 @@ const DeveloperPictures = () => {
         <View style={styles.root}>
             <Progress.Bar progress={0.9} width={415} />
             <Text style={styles.label}>Add your Property pictures</Text>
-            <ImageUploader />
+            <ImageUploader setSelectedImages={setImages} />
             <CustomButton
                 text="Next"
                 onPress={handleNextButtonPress} // Call handleNextButtonPress when the button is pressed

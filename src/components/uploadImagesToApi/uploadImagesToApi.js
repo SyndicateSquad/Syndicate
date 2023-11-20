@@ -1,4 +1,4 @@
-const uploadImagesToApi = async (imageUris) => {
+export async function uploadImagesToApi(imageUris) {
     imageUris.forEach(async (uri) => {
         const formData = new FormData();
         const name = uri.split('/').pop();

@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Button, Image, StyleSheet, ScrollView } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
-export default function ImageUploader() {
+
+export default function ImageUploader({ setSelectedImages }) {
     const [images, setImages] = useState([null, null, null, null, null, null]);
 
     useEffect(() => {
@@ -26,9 +27,9 @@ export default function ImageUploader() {
             const newImages = [...images];
             newImages[index] = result.uri;
             setImages(newImages);
+            setSelectedImages(newImages); // Update the state in the parent component
         }
     };
-
     return (
         <ScrollView style={styles.container}>
             <View style={styles.imageGrid}>
