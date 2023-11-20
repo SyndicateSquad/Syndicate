@@ -38,6 +38,23 @@ class LoginCredential(BaseModel):
     email: str
     password: str
 
+class SignUpCredential(BaseModel):
+    email: str
+    password: str
+    firstName: str
+    lastName: str
+    city: str
+    state: str
+    zipCode: int
+    country: str
+    phone_number: int
+    bio: str
+    user_type: str
+
+class UserEmail(BaseModel):
+    email: str
+
+
 # Check for login credential validity
 @app.post('/login')
 async def receive_data(credential: LoginCredential):
@@ -62,20 +79,6 @@ async def receive_data(credential: LoginCredential):
             return JSONResponse(content=True, status_code=200)
     # return False
     return JSONResponse(content=False, status_code=400)
-
-
-class SignUpCredential(BaseModel):
-    email: str
-    password: str
-    firstName: str
-    lastName: str
-    city: str
-    state: str
-    zipCode: int
-    country: str
-    phone_number: int
-    bio: str
-    user_type: str
 
 
 # Add Sign Up details to DynamoDB
@@ -107,10 +110,8 @@ async def signup(credential: SignUpCredential):
 
     return JSONResponse(content= "Successfully Signed Up!", status_code= 200)
     
-
-class UserEmail(BaseModel):
-    email: str
     
+# Verify if Email exists in `Users` table
 @app.post('/verify_email_dne')
 def verify_email_dne(user: UserEmail):
     
