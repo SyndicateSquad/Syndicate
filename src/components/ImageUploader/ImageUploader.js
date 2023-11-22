@@ -23,9 +23,9 @@ export default function ImageUploader({ setSelectedImages }) {
             quality: 1,
         });
 
-        if (!result.cancelled) {
+        if (!result.canceled) {
             const newImages = [...images];
-            newImages[index] = result.uri;
+            newImages[index] = result.assets[0].uri;
             setImages(newImages);
             setSelectedImages(newImages); // Update the state in the parent component
         }
