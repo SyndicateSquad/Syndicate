@@ -8,7 +8,7 @@ export async function uploadImagesToApi(imageUris) {
         formData.append('file', { uri, name, type });
 
         try {
-            const response = await fetch('http://127.0.0.1:8000/upload', {
+            const response = await fetch('http://192.168.0.20:8000/upload', {
                 method: 'POST',
                 body: formData,
                 headers: {

@@ -11,7 +11,7 @@ from pydantic import BaseModel
 from fastapi.responses import JSONResponse
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
-from botocore.exceptions import NoCredentialsError
+from botocore.exceptions import NoCredentialsError, ClientError
 
 
 app = FastAPI()
@@ -32,7 +32,13 @@ app.add_middleware(
 
 
 dynamoDB = boto3.resource('dynamodb')
-s3 = boto3.resource('s3')
+s3 = boto3.resource(
+    's3',
+    aws_access_key_id=os.environ.get('AKIAVTUJSEM6VW6X2H3C'),
+    aws_secret_access_key=os.environ.get('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'),
+    region_name='us-east-1'  # specify the AWS region
+)
+
 
 
 class LoginCredential(BaseModel):
@@ -177,20 +183,19 @@ async def generate_confirmation_code(user: UserEmail):
 @app.post('/upload')
 async def upload_to_s3(file: UploadFile = File(...)):
     try:
-        # Specify the bucket name
         bucket_name = 'syndicateimages'
-
-        # Upload the file to the S3 bucket without setting ACL
         s3.Bucket(bucket_name).upload_fileobj(
             file.file,
             file.filename,
-            ExtraArgs={
-                "ContentType": file.content_type
-            }
+            ExtraArgs={"ContentType": file.content_type}
         )
         return JSONResponse(content={"message": "Successfully uploaded"})
+    except NoCredentialsError:
+        raise HTTPException(status_code=401, detail='AWS credentials not found or invalid')
+    except ClientError as e:
+        raise HTTPException(status_code=400, detail=f'AWS Client Error: {e}')
     except Exception as e:
-        raise HTTPException(status_code=400, detail=f'Error: {e}')
+        raise HTTPException(status_code=500, detail=f'Server Error: {e}')
     
 # # Receive the Investor's (User's) email id, get the preferences, sort ALL property listings based on preferences, return order of properties by ID
 # @app.post('/property_swipe_list')
