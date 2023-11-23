@@ -32,12 +32,13 @@ app.add_middleware(
 
 
 dynamoDB = boto3.resource('dynamodb')
-s3 = boto3.resource(
-    's3',
-    aws_access_key_id=os.environ.get('AKIAVTUJSEM6VW6X2H3C'),
-    aws_secret_access_key=os.environ.get('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'),
-    region_name='us-east-1'  # specify the AWS region
-)
+s3 = boto3.resource('s3')
+# s3 = boto3.resource(
+#     's3',
+#     aws_access_key_id=os.environ.get('AKIAVTUJSEM6VW6X2H3C'),
+#     aws_secret_access_key=os.environ.get('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'),
+#     region_name='us-east-1'  # specify the AWS region
+# )
 
 
 
