@@ -28,6 +28,7 @@ const ForgotPasswordScreen = () => {
                 <CustomInput
                     placeholder='Username'
                     value={username}
+                    test='normal'
                     setValue={setUsername}
                 />
                 <CustomButton
