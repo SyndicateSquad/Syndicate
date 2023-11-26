@@ -13,6 +13,7 @@ import SocialSignUp from '../screens/SignUpScreen/SocialSignUp';
 import CreateProfileScreen from '../screens/CreateProfile/CreateProfileScreen';
 import DeveloperProfile from '../screens/CreateProfile/DeveloperProfile';
 import InvestorProfile from '../screens/CreateProfile/InvestorProfile';
+import ViewListings from '../screens/ViewListings/ViewListings';
 const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
@@ -31,6 +32,7 @@ const Navigation = () => {
         <Stack.Screen name="CreateProfile" component={CreateProfileScreen} />
         <Stack.Screen name="Developer" component={DeveloperProfile} />
         <Stack.Screen name="Investor" component={InvestorProfile} />
+        <Stack.Screen name="Listings" component={ViewListings} />
       </Stack.Navigator>
     </NavigationContainer>
   )

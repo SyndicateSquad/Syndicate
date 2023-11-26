@@ -1,7 +1,6 @@
 import {
     View,
     StyleSheet,
-    Dimensions,
     Image,
     StatusBar,
     Text,
@@ -9,10 +8,9 @@ import {
 } from 'react-native';
 import React from 'react';
 import Swiper from 'react-native-deck-swiper'
-import { Transitioning, Transition } from 'react-native-reanimated';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-
-const { width } = Dimensions.get('window')
+import { TransformSharp } from '@mui/icons-material';
+import { useNavigation } from '@react-navigation/native';
 const colors = {
     red: '#EC2379',
     blue: '#0070FF',
@@ -20,63 +18,126 @@ const colors = {
     white: '#ffffff',
     black: '#000000'
 };
-// const transition = (
-//     <Transition.Sequence>
-//         <Transition.Out
-//             type='slide-bottom'
-//             durationMs={ANIMATION_DURATION}
-//             interpolation='easeIn'
-//         />
-//         <Transition.Together>
-//             <Transition.In
-//                 type='fade'
-//                 durationMs={ANIMATION_DURATION}
-//                 delayMs={ANIMATION_DURATION / 2}
-//             />
-//             <Transition.In
-//                 type='slide-bottom'
-//                 durationMs={ANIMATION_DURATION}
-//                 delayMs={ANIMATION_DURATION / 2}
-//                 interpolation='easeOut'
-//             />
-//         </Transition.Together>
-//     </Transition.Sequence>
-// );
+
 const swiperRef = React.createRef();
-const transitionRef = React.createRef();
 export default function HomeScreen() {
     const Properties = [
-        { id: "1", uri: require('../../../assets/images/property_1.jpeg') },
-        { id: "2", uri: require('../../../assets/images/property_2.jpeg') },
-        { id: "3", uri: require('../../../assets/images/property_3.jpeg') },
-        { id: "4", uri: require('../../../assets/images/property_4.jpeg') },
-        { id: "5", uri: require('../../../assets/images/property_5.jpeg') },
-        { id: "6", uri: require('../../../assets/images/property_6.jpeg') },
-        { id: "7", uri: require('../../../assets/images/property_7.jpeg') },
-        { id: "8", uri: require('../../../assets/images/property_8.jpeg') },
-        { id: "9", uri: require('../../../assets/images/property_9.jpeg') },
-        { id: "10", uri: require('../../../assets/images/property_10.jpeg') }
+        {
+            id: "1",
+            uri: require('../../../assets/images/property_1.jpeg'),
+            type: "Commercial",
+            propertySize: "500 sq. ft.",
+            minimumInvestment: "$100,000",
+            estimatedPriceRange: "$500,000 - $700,000"
+        },
+        {
+            id: "2",
+            uri: require('../../../assets/images/property_2.jpeg'),
+            type: "Residential",
+            propertySize: "1200 sq. ft.",
+            minimumInvestment: "$150,000",
+            estimatedPriceRange: "$700,000 - $900,000"
+        },
+        {
+            id: "3",
+            uri: require('../../../assets/images/property_3.jpeg'),
+            type: "Hospitality",
+            propertySize: "150,000 sq. ft.",
+            minimumInvestment: "$20,000",
+            estimatedPriceRange: "$100,000"
+        },
+        {
+            id: "4",
+            uri: require('../../../assets/images/property_4.jpeg'),
+            type: "Hospitality",
+            propertySize: "50,000 sq. ft",
+            minimumInvestment: "$250,000",
+            estimatedPriceRange: "$250,000"
+        },
+        {
+            id: "5",
+            uri: require('../../../assets/images/property_5.jpeg'),
+            type: "Industrial",
+            propertySize: "200,000 sq ft",
+            minimumInvestment: "$15,000",
+            estimatedPriceRange: "$500,000"
+        },
+        {
+            id: "6",
+            uri: require('../../../assets/images/property_6.jpeg'),
+            type: "Commercial",
+            propertySize: "500,000 sq ft",
+            minimumInvestment: "$100,000",
+            estimatedPriceRange: "$1,000,000"
+        },
+        {
+            id: "7",
+            uri: require('../../../assets/images/property_7.jpeg'),
+            type: "Residential",
+            propertySize: "80,000 sq ft",
+            minimumInvestment: "$80,000",
+            estimatedPriceRange: "$400,000"
+        },
+        {
+            id: "8",
+            uri: require('../../../assets/images/property_8.jpeg'),
+            type: "Commercial",
+            propertySize: "300,000 sq ft",
+            minimumInvestment: "$200,000",
+            estimatedPriceRange: "$1,000,000"
+        },
+        {
+            id: "9",
+            uri: require('../../../assets/images/property_9.jpeg'),
+            type: "Hospitality",
+            propertySize: "120,000 sq ft",
+            minimumInvestment: "$50,000",
+            estimatedPriceRange: "$600,000"
+        },
+        {
+            id: "10",
+            uri: require('../../../assets/images/property_10.jpeg'),
+            type: "Industrial",
+            propertySize: "250,000 sq ft",
+            minimumInvestment: "$300,000",
+            estimatedPriceRange: "$2,000,000"
+        }
     ]
     const [index, setIndex] = React.useState(0)
-
     const Card = ({ card }) => (
         <Image source={card.uri} style={styles.cardImage} />
     )
-    const CardDetails = ({ index }) => (
-        <View key={Properties[index].id} style={{ alignItems: 'center' }}>
-            {/* <Text style={[styles.text, styles.heading]} numberOfLines={2}>
-                {data[index].name}
-            </Text> */}
-            {/* <Text style={[styles.text, styles.price]}>{data[index].price}</Text> */}
-        </View>
-    );
-
-
+    // const CardDetails = ({ index }) => (
+    //     <View key={Properties[index].id} style={{ alignItems: 'center', paddingTop: 60 }}>
+    //         <Text style={[styles.text, styles.heading]} numberOfLines={2}>
+    //             {Properties[index].type}
+    //         </Text>
+    //         <Text style={[styles.text, styles.minimumInvestment]}>
+    //             Minimum Investment: {Properties[index].minimumInvestment}
+    //         </Text>
+    //     </View>
+    // )
     const onSwiped = () => {
         setIndex(index + 1)
     }
+    const navigation = useNavigation();
+    const onProfilePressed = () => {
+        navigation.navigate('Listings')
+    }
     return (
         <SafeAreaView style={styles.container}>
+            <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+                <MaterialCommunityIcons.Button
+                    name='account-circle'
+                    size={60}
+                    color='black'
+                    backgroundColor='transparent'
+                    paddingBottom={0}
+                    onPress={onProfilePressed}
+                    underlayColor='transparent'
+                    activeOpacity={.3}
+                />
+            </View>
             <StatusBar hidden={true} />
             <View style={styles.swiperContainer}>
                 <Swiper
@@ -92,7 +153,7 @@ export default function HomeScreen() {
                     disableBottomSwipe
                     infinite
                     backgroundColor={'transparent'}
-                    cardVerticalMargin={50}
+                // cardVerticalMargin={50}
                 />
             </View>
             <View style={styles.bottomContainer}>
@@ -139,17 +200,22 @@ const styles = StyleSheet.create({
         height: '55%',
         borderRadius: 8,
         resizeMode: 'cover',
-        top: '2%'
+        top: '-3%'
     },
     bottomContainerButtons: {
         flexDirection: 'row',
         justifyContent: 'space-evenly',
-        paddingTop: 40
     },
     text: {
         textAlign: 'center',
-        fontSize: 50,
+        fontSize: 20,
         backgroundColor: 'transparent'
     },
+    // text: { fontFamily: 'Courier' },
+    minimumInvestment: {
+        color: colors.blue,
+        fontSize: 20,
+        fontWeight: '500'
+    }
 })
 
