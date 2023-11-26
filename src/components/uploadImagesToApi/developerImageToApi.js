@@ -1,4 +1,16 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 export async function uploadImagesToApi(imageUris) {
+
+    // Retrieve the user's email from AsyncStorage
+    const user_email = await AsyncStorage.getItem('user_email');
+
+    if (!user_email) {
+        console.error('User email not found in AsyncStorage');
+        return;
+    }
+
+
     imageUris.forEach(async (uri) => {
         const formData = new FormData();
         const name = uri.split('/').pop();
@@ -6,9 +18,11 @@ export async function uploadImagesToApi(imageUris) {
         // Assuming you have the mime type extension in the image uri
         const type = `image/${name.split('.').pop()}`;
         formData.append('file', { uri, name, type });
+        formData.append('user_email', user_email); // Include user email in formData
+
 
         try {
-            const response = await fetch('http://192.168.0.20:8000/upload', {
+            const response = await fetch('http://192.168.0.20:8000/uploadToDeveloper', {
                 method: 'POST',
                 body: formData,
                 headers: {
