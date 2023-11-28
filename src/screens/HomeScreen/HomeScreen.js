@@ -1,221 +1,221 @@
 import {
     View,
     StyleSheet,
-    Dimensions,
     Image,
-    Animated,
-    PanResponder,
-    Text
+    StatusBar,
+    Text,
+    SafeAreaView,
 } from 'react-native';
 import React from 'react';
-const SCREEN_HEIGHT = Dimensions.get('window').height;
-const SCREEN_WIDTH = Dimensions.get('window').width;
-const Properties = [
-    { id: "1", uri: require('../../../assets/images/property_1.jpeg') },
-    { id: "2", uri: require('../../../assets/images/property_2.jpeg') },
-    { id: "3", uri: require('../../../assets/images/property_3.jpeg') },
-    { id: "4", uri: require('../../../assets/images/property_4.jpeg') },
-    { id: "5", uri: require('../../../assets/images/property_5.jpeg') },
-    { id: "6", uri: require('../../../assets/images/property_6.jpeg') },
-    { id: "7", uri: require('../../../assets/images/property_7.jpeg') },
-    { id: "8", uri: require('../../../assets/images/property_8.jpeg') },
-    { id: "9", uri: require('../../../assets/images/property_9.jpeg') },
-    { id: "10", uri: require('../../../assets/images/property_10.jpeg') }
-];
+import Swiper from 'react-native-deck-swiper'
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { TransformSharp } from '@mui/icons-material';
+import { useNavigation } from '@react-navigation/native';
+const colors = {
+    red: '#EC2379',
+    blue: '#0070FF',
+    gray: '#777777',
+    white: '#ffffff',
+    black: '#000000'
+};
 
-export default class HomeScreen extends React.Component {
-    constructor() {
-        super();
-
-        this.position = new Animated.ValueXY();
-        this.state = {
-            currentIndex: 0
-        };
-        this.rotate = this.position.x.interpolate({
-            inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
-            outputRange: ['-10deg', '0deg', '10deg'],
-            extrapolate: 'clamp'
-        })
-        this.rotateAndTranslate = {
-            transform: [{
-                rotate: this.rotate
-            },
-            ...this.position.getTranslateTransform()
-            ]
+const swiperRef = React.createRef();
+export default function HomeScreen() {
+    const Properties = [
+        {
+            id: "1",
+            uri: require('../../../assets/images/property_1.jpeg'),
+            type: "Commercial",
+            propertySize: "500 sq. ft.",
+            minimumInvestment: "$100,000",
+            estimatedPriceRange: "$500,000 - $700,000"
+        },
+        {
+            id: "2",
+            uri: require('../../../assets/images/property_2.jpeg'),
+            type: "Residential",
+            propertySize: "1200 sq. ft.",
+            minimumInvestment: "$150,000",
+            estimatedPriceRange: "$700,000 - $900,000"
+        },
+        {
+            id: "3",
+            uri: require('../../../assets/images/property_3.jpeg'),
+            type: "Hospitality",
+            propertySize: "150,000 sq. ft.",
+            minimumInvestment: "$20,000",
+            estimatedPriceRange: "$100,000"
+        },
+        {
+            id: "4",
+            uri: require('../../../assets/images/property_4.jpeg'),
+            type: "Hospitality",
+            propertySize: "50,000 sq. ft",
+            minimumInvestment: "$250,000",
+            estimatedPriceRange: "$250,000"
+        },
+        {
+            id: "5",
+            uri: require('../../../assets/images/property_5.jpeg'),
+            type: "Industrial",
+            propertySize: "200,000 sq ft",
+            minimumInvestment: "$15,000",
+            estimatedPriceRange: "$500,000"
+        },
+        {
+            id: "6",
+            uri: require('../../../assets/images/property_6.jpeg'),
+            type: "Commercial",
+            propertySize: "500,000 sq ft",
+            minimumInvestment: "$100,000",
+            estimatedPriceRange: "$1,000,000"
+        },
+        {
+            id: "7",
+            uri: require('../../../assets/images/property_7.jpeg'),
+            type: "Residential",
+            propertySize: "80,000 sq ft",
+            minimumInvestment: "$80,000",
+            estimatedPriceRange: "$400,000"
+        },
+        {
+            id: "8",
+            uri: require('../../../assets/images/property_8.jpeg'),
+            type: "Commercial",
+            propertySize: "300,000 sq ft",
+            minimumInvestment: "$200,000",
+            estimatedPriceRange: "$1,000,000"
+        },
+        {
+            id: "9",
+            uri: require('../../../assets/images/property_9.jpeg'),
+            type: "Hospitality",
+            propertySize: "120,000 sq ft",
+            minimumInvestment: "$50,000",
+            estimatedPriceRange: "$600,000"
+        },
+        {
+            id: "10",
+            uri: require('../../../assets/images/property_10.jpeg'),
+            type: "Industrial",
+            propertySize: "250,000 sq ft",
+            minimumInvestment: "$300,000",
+            estimatedPriceRange: "$2,000,000"
         }
-        this.likeOpacity = this.position.x.interpolate({
-            inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
-            outputRange: [0, 0, 1],
-            extrapolate: 'clamp'
-        })
-        this.dislikeOpacity = this.position.x.interpolate({
-            inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
-            outputRange: [1, 0, 0],
-            extrapolate: 'clamp'
-        })
-        this.nextCardOpacity = this.position.x.interpolate({
-            inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
-            outputRange: [1, 0, 1],
-            extrapolate: 'clamp'
-        })
-        this.nextCardScale = this.position.x.interpolate({
-            inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
-            outputRange: [1, 0.8, 1],
-            extrapolate: 'clamp'
-        })
+    ]
+    const [index, setIndex] = React.useState(0)
+    const Card = ({ card }) => (
+        <Image source={card.uri} style={styles.cardImage} />
+    )
+    // const CardDetails = ({ index }) => (
+    //     <View key={Properties[index].id} style={{ alignItems: 'center', paddingTop: 60 }}>
+    //         <Text style={[styles.text, styles.heading]} numberOfLines={2}>
+    //             {Properties[index].type}
+    //         </Text>
+    //         <Text style={[styles.text, styles.minimumInvestment]}>
+    //             Minimum Investment: {Properties[index].minimumInvestment}
+    //         </Text>
+    //     </View>
+    // )
+    const onSwiped = () => {
+        setIndex(index + 1)
     }
-
-    componentWillMount() {
-        this.PanResponder = PanResponder.create({
-    
-          onStartShouldSetPanResponder: (evt, gestureState) => true,
-          onPanResponderMove: (evt, gestureState) => {
-    
-            this.position.setValue({ x: gestureState.dx, y: gestureState.dy })
-          },
-          onPanResponderRelease: (evt, gestureState) => {
-    
-            if (gestureState.dx > 120) {
-              Animated.spring(this.position, {
-                toValue: { x: SCREEN_WIDTH + 100, y: gestureState.dy }
-              }).start(() => {
-                this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
-                  this.position.setValue({ x: 0, y: 0 })
-                })
-              })
-            }
-            else if (gestureState.dx < -120) {
-              Animated.spring(this.position, {
-                toValue: { x: -SCREEN_WIDTH - 100, y: gestureState.dy }
-              }).start(() => {
-                this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
-                  this.position.setValue({ x: 0, y: 0 })
-                })
-              })
-            }
-            else {
-              Animated.spring(this.position, {
-                toValue: { x: 0, y: 0 },
-                friction: 4
-              }).start()
-            }
-          }
-        })
-      }
-
-    renderProperties = () => {
-        return Properties.map((item, i) => {
-            if (i < this.state.currentIndex) {
-                return null;
-            } else if (i === this.state.currentIndex) {
-                return (
-                    <Animated.View
-                        {...this.PanResponder.panHandlers}
-                        key={item.id}
-                        style={[
-                            { opacity: this.nextCardOpacity },
-                            { transform: [{ scale: this.nextCardScale }] },
-                            this.rotateAndTranslate,
-                            styles.view
-                        ]}>
-                        <Animated.View
-                            style={[
-                                { opacity: this.likeOpacity },
-                                { transform: [{ rotate: '-30deg' }] },
-                                styles.like
-                            ]}>
-                            <Text style={styles.likeText}>YES</Text>
-                        </Animated.View>
-
-                        <Animated.View
-                            style={[
-                                { opacity: this.dislikeOpacity },
-                                { transform: [{ rotate: '30deg' }] },
-                                styles.dislike]}>
-                            <Text
-                                style={styles.dislikeText}>NO</Text>
-                        </Animated.View>
-
-                        <Image
-                            style={styles.Image}
-                            source={item.uri}
-                        />
-                    </Animated.View>
-                );
-            } else {
-                return (
-                    <Animated.View
-                        key={item.id}
-                        style={styles.view}
-                    >
-                        <Image
-                            style={styles.Image}
-                            source={item.uri}
-                        />
-                    </Animated.View>
-                );
-            }
-        }).reverse();
+    const navigation = useNavigation();
+    const onProfilePressed = () => {
+        navigation.navigate('Listings')
     }
-
-    render() {
-        return (
-            <View style={{ flex: 1 }} >
-                <View style={{ height: 60 }}>
-
-                </View>
-                <View style={{ flex: 1 }}>
-                    {this.renderProperties()}
-                </View>
-                <View style={{ height: 60 }}>
-
+    return (
+        <SafeAreaView style={styles.container}>
+            <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+                <MaterialCommunityIcons.Button
+                    name='account-circle'
+                    size={60}
+                    color='black'
+                    backgroundColor='transparent'
+                    paddingBottom={0}
+                    onPress={onProfilePressed}
+                    underlayColor='transparent'
+                    activeOpacity={.3}
+                />
+            </View>
+            <StatusBar hidden={true} />
+            <View style={styles.swiperContainer}>
+                <Swiper
+                    cards={Properties}
+                    cardIndex={index}
+                    ref={swiperRef}
+                    renderCard={(card) => <Card card={card} />}
+                    onSwiper={onSwiped}
+                    stackSize={3} // how many items are displayed on top of each other 
+                    // stackScale={10} // how much the height shrinks in percentage
+                    stackSeparation={14} // spacing between current item and upcoming items
+                    disableTopSwipe
+                    disableBottomSwipe
+                    infinite
+                    backgroundColor={'transparent'}
+                // cardVerticalMargin={50}
+                />
+            </View>
+            <View style={styles.bottomContainer}>
+                {/* <CardDetails index={index} /> */}
+                <View style={styles.bottomContainerButtons}>
+                    <MaterialCommunityIcons.Button
+                        name='close-outline'
+                        size={94}
+                        backgroundColor='transparent'
+                        underlayColor='transparent'
+                        activeOpacity={0.3}
+                        color={colors.red}
+                        onPress={() => swiperRef.current.swipeLeft()}
+                    />
+                    <MaterialCommunityIcons.Button
+                        name='check-outline'
+                        size={94}
+                        backgroundColor='transparent'
+                        underlayColor='transparent'
+                        activeOpacity={0.3}
+                        color={colors.blue}
+                        onPress={() => swiperRef.current.swipeRight()}
+                    />
                 </View>
             </View>
-        );
-    }
+        </SafeAreaView>
+    )
 }
-
 const styles = StyleSheet.create({
-    view: {
-        height: SCREEN_HEIGHT - 120,
-        width: SCREEN_WIDTH,
-        padding: 10,
-        position: 'absolute'
-    },
-    Image: {
+    container: {
         flex: 1,
-        height: null,
-        width: null,
+        // backgroundColor: '#D4E8FF'
+        backgroundColor: 'white'
+    },
+    swiperContainer: {
+        flex: 0.55,
+    },
+    bottomContainer: {
+        flex: 0.45,
+        justifyContent: 'space-evenly'
+    },
+    cardImage: {
+        width: '100%',
+        height: '55%',
+        borderRadius: 8,
         resizeMode: 'cover',
-        borderRadius: 20
+        top: '-3%'
     },
-    like: {
-        position: 'absolute',
-        top: 50,
-        left: 40,
-        zIndex: 1000
+    bottomContainerButtons: {
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
     },
-    likeText: {
-        borderWidth: 1,
-        borderColor: 'green',
-        color: 'green',
-        fontSize: 32,
-        fontWeight: '800',
-        padding: 10
+    text: {
+        textAlign: 'center',
+        fontSize: 20,
+        backgroundColor: 'transparent'
     },
-    dislike: {
-        position: 'absolute',
-        top: 50,
-        right: 40,
-        zIndex: 1000
-    },
-    dislikeText: {
-        borderWidth: 1,
-        borderColor: 'red',
-        color: 'red',
-        fontSize: 32,
-        fontWeight: '800',
-        padding: 10
-    },
+    // text: { fontFamily: 'Courier' },
+    minimumInvestment: {
+        color: colors.blue,
+        fontSize: 20,
+        fontWeight: '500'
+    }
+})
 
-});
