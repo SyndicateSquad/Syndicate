@@ -32,7 +32,7 @@ app.add_middleware(
 
 
 dynamoDB = boto3.resource('dynamodb')
-s3 = boto3.resource('s3')
+s3 = boto3.client('s3')
 
 
 
@@ -188,26 +188,26 @@ async def upload_to_s3(user_email: str, file: UploadFile = File(...)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f'Server Error: {e}')
 
-@app.post('/uploadToInvestor')
-async def upload_to_s3(file: UploadFile = File(...)):
-    try:
-        bucket_name = 'investorimages'
-        s3.Bucket(bucket_name).upload_fileobj(
-            file.file,
-            file.filename,
-            ExtraArgs={"ContentType": file.content_type}
-        )
-        return JSONResponse(content={"message": "Successfully uploaded"})
-    except NoCredentialsError:
-        raise HTTPException(status_code=401, detail='AWS credentials not found or invalid')
-    except ClientError as e:
-        raise HTTPException(status_code=400, detail=f'AWS Client Error: {e}')
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f'Server Error: {e}')
+# @app.post('/uploadToInvestor')
+# async def upload_to_s3(file: UploadFile = File(...)):
+#     try:
+#         bucket_name = 'investorimages'
+#         s3.Bucket(bucket_name).upload_fileobj(
+#             file.file,
+#             file.filename,
+#             ExtraArgs={"ContentType": file.content_type}
+#         )
+#         return JSONResponse(content={"message": "Successfully uploaded"})
+#     except NoCredentialsError:
+#         raise HTTPException(status_code=401, detail='AWS credentials not found or invalid')
+#     except ClientError as e:
+#         raise HTTPException(status_code=400, detail=f'AWS Client Error: {e}')
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail=f'Server Error: {e}')
 
-def folder_exists(bucket_name, folder_name):
-    response = s3.list_objects_v2(Bucket=bucket_name, Prefix=folder_name)
-    return 'Contents' in response
+# def folder_exists(bucket_name, folder_name):
+#     response = s3.list_objects_v2(Bucket=bucket_name, Prefix=folder_name)
+#     return 'Contents' in response
 
 def upload_to_user_folder(bucket_name, user_email, file_obj, file_name, content_type):
     folder_name = user_email + '/'  # Folder name is the user's email

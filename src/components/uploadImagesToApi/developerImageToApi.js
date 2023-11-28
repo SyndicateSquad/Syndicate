@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export async function uploadImagesToApi(imageUris) {
+export async function developerImageToApi(imageUris) {
 
     // Retrieve the user's email from AsyncStorage
     const user_email = await AsyncStorage.getItem('user_email');
