@@ -27,38 +27,38 @@ const SignInScreen = () => {
                 const response = await fetch(url, {
                     method: 'POST',
                     headers: {
-                    'Content-Type': 'application/json',
+                        'Content-Type': 'application/json',
                     },
                     body: JSON.stringify(data),
                 });
-            
+
                 const responseData = await response.json();
                 // console.warn(responseData); 
 
-                if (response.ok){
+                if (response.ok) {
                     navigation.navigate('Home');
                 }
-                else{
+                else {
                     console.warn("Invalid Login");
                 }
 
-            } 
+            }
             catch (error) {
                 console.error('Error:', error);
             }
         }
-        
-        await loginUser(); 
-        
-        };
-          
-    
+
+        await loginUser();
+
+    };
+
+
     const onForgotPasswordPressed = () => {
         navigation.navigate('ForgotPassword')
     }
     const onSignUpPress = () => {
         // navigation.navigate('SignUp')
-        navigation.navigate('SignUp')
+        navigation.navigate('Developer')
     }
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -75,6 +75,7 @@ const SignInScreen = () => {
                     setValue={setEmail}
                     label='Email'
                     test='normal'
+                    maxLength={10}
                 />
                 <Text style={[styles.label, { right: 140 }]}>Password</Text>
                 <CustomInput

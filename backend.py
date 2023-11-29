@@ -5,12 +5,13 @@ import json
 from random import randint
 from decimal import Decimal
 from boto3.dynamodb.conditions import Key
-from fastapi import FastAPI
+from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from fastapi.responses import JSONResponse
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
+from botocore.exceptions import NoCredentialsError, ClientError
 
 
 app = FastAPI()
@@ -31,7 +32,8 @@ app.add_middleware(
 
 
 dynamoDB = boto3.resource('dynamodb')
-s3 = boto3.resource('s3')
+s3 = boto3.client('s3')
+
 
 
 class LoginCredential(BaseModel):
@@ -131,9 +133,9 @@ def verify_email_dne(user: UserEmail):
 # Handle Delete User Request
 @app.post('/delete_user')
 async def delete(user: UserEmail):
-    
+
     primary_key = {'Email': user.email.lower()}
-    
+    table = dynamoDB.Table('Users')
     try:
         response = table.delete_item(
             Key = primary_key
@@ -171,17 +173,67 @@ async def generate_confirmation_code(user: UserEmail):
     return JSONResponse(content= str(CONFIRMATION_CODE), status_code=200)
 
 
+@app.post('/uploadToDeveloper')
+async def upload_to_s3(user_email: str, file: UploadFile = File(...)):
+    try:
+        bucket_name = 'developerimages'
+        response = upload_to_user_folder(bucket_name, user_email, file.file, file.filename, file.content_type)
+        return JSONResponse(content={"message": response})
+    except NoCredentialsError:
+        raise HTTPException(status_code=401, detail='AWS credentials not found or invalid')
+    except ClientError as e:
+        raise HTTPException(status_code=400, detail=f'AWS Client Error: {e}')
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f'Server Error: {e}')
 
-# Receive the Investor's (User's) email id, get the preferences, sort ALL property listings based on preferences, return order of properties by ID
-@app.post('/property_swipe_list')
-async def get_property_swipe_list(investor: UserEmail):
+# @app.post('/uploadToInvestor')
+# async def upload_to_s3(file: UploadFile = File(...)):
+#     try:
+#         bucket_name = 'investorimages'
+#         s3.Bucket(bucket_name).upload_fileobj(
+#             file.file,
+#             file.filename,
+#             ExtraArgs={"ContentType": file.content_type}
+#         )
+#         return JSONResponse(content={"message": "Successfully uploaded"})
+#     except NoCredentialsError:
+#         raise HTTPException(status_code=401, detail='AWS credentials not found or invalid')
+#     except ClientError as e:
+#         raise HTTPException(status_code=400, detail=f'AWS Client Error: {e}')
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail=f'Server Error: {e}')
 
-    # get minimum investment preference of the investor
-    key_condition_expression = Key('Email').eq(email)
-    table = dynamoDB.Table('Investor')
-    response = table.query(
-        KeyConditionExpression=key_condition_expression
-    )
-    min_investment = response['Items'][0]['Min_Investment']
+def folder_exists(bucket_name, folder_name):
+    response = s3.list_objects_v2(Bucket=bucket_name, Prefix=folder_name)
+    return 'Contents' in response
 
-    # sort property listings by min investment asc and return 
+def upload_to_user_folder(bucket_name, user_email, file_obj, file_name, content_type):
+    folder_name = user_email  # Folder name is the user's email
+
+    if not folder_exists(bucket_name, folder_name):
+        print(f"Creating folder for {user_email}")
+
+    full_file_path = f"{folder_name}{file_name}"
+    try:
+        s3.upload_fileobj(
+            file_obj,
+            bucket_name,
+            full_file_path,
+            ExtraArgs={"ContentType": content_type}
+        )
+        return "File uploaded successfully."
+    except Exception as e:
+        return str(e)
+# # Receive the Investor's (User's) email id, get the preferences, sort ALL property listings based on preferences, return order of properties by ID
+# @app.post('/property_swipe_list')
+# async def get_property_swipe_list(investor: UserEmail):
+
+#     # get minimum investment preference of the investor
+#     key_condition_expression = Key('Email').eq(email)
+#     table = dynamoDB.Table('Investor')
+#     response = table.query(
+#         KeyConditionExpression=key_condition_expression
+#     )
+#     min_investment = response['Items'][0]['Min_Investment']
+
+#     # sort property listings by min investment asc and return 
