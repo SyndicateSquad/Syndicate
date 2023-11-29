@@ -75,7 +75,6 @@ const SignInScreen = () => {
                     setValue={setEmail}
                     label='Email'
                     test='normal'
-                    maxLength={10}
                 />
                 <Text style={[styles.label, { right: 140 }]}>Password</Text>
                 <CustomInput
