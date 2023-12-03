@@ -54,7 +54,8 @@ const SignInScreen = () => {
 
 
     const onForgotPasswordPressed = () => {
-        navigation.navigate('ForgotPassword')
+        // navigation.navigate('ForgotPassword')
+        navigation.navigate('Chatting')
     }
     const onSignUpPress = () => {
         // navigation.navigate('SignUp')

@@ -6446,12 +6446,22 @@ expo-asset@~8.10.1:
     path-browserify "^1.0.0"
     url-parse "^1.5.9"
 
+expo-av@*, expo-av@^13.6.0:
+  version "13.6.0"
+  resolved "https://registry.npmjs.org/expo-av/-/expo-av-13.6.0.tgz"
+  integrity sha512-42dDX53uao+IxuecNRcAvLuO7CiF9lriCufDfw2sSIGKRYox6m2RXYFstVpDSv2gzsuScGk7fwT23EUrUXbk8A==
+
 expo-camera@~13.4.4:
   version "13.4.4"
   resolved "https://registry.npmjs.org/expo-camera/-/expo-camera-13.4.4.tgz"
   integrity sha512-7k54APbpSulUDR2CrD5SrmKjCdfdg4tqKRpbBOKc2J2MIBHhunExU77435JDYSejHRY5bfRHZsEp3yKwR862uw==
   dependencies:
     invariant "^2.2.4"
+
+expo-clipboard@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.npmjs.org/expo-clipboard/-/expo-clipboard-4.5.0.tgz"
+  integrity sha512-M3RfLWYuD+gNo8C305oa0zySQIwtomI4nrY0gXkNB6Ud7+99K+k0JNKPEZQohCa7XgL1YZRbJxth/zrbxSnxZQ==
 
 expo-constants@~14.4.2:
   version "14.4.2"
@@ -6460,6 +6470,11 @@ expo-constants@~14.4.2:
   dependencies:
     "@expo/config" "~8.1.0"
     uuid "^3.3.2"
+
+expo-document-picker@*, expo-document-picker@^11.7.0:
+  version "11.7.0"
+  resolved "https://registry.npmjs.org/expo-document-picker/-/expo-document-picker-11.7.0.tgz"
+  integrity sha512-y5OgUuJlip/Vj3CXi6Rfx6PqMkoYwytKmgN6x8afRPehVcYVk3j/EZxvz1MLgUhCmjyFnIpfgG5WTf8uSNbIiA==
 
 expo-file-system@*, expo-file-system@~15.4.0, expo-file-system@~15.4.4, expo-file-system@~15.4.5:
   version "15.4.5"
@@ -6474,6 +6489,11 @@ expo-font@~11.4.0:
   integrity sha512-nkmezCFD7gR/I6R+e3/ry18uEfF8uYrr6h+PdBJu+3dawoLOpo+wFb/RG9bHUekU1/cPanR58LR7G5MEMKHR2w==
   dependencies:
     fontfaceobserver "^2.1.0"
+
+expo-haptics@*, expo-haptics@^12.6.0:
+  version "12.6.0"
+  resolved "https://registry.npmjs.org/expo-haptics/-/expo-haptics-12.6.0.tgz"
+  integrity sha512-/kw75+2qKfr+K1wIjul0BFG1YUqidXYt1wMzsEmdDTCBU/P/xTKX5O3X5W3mdAeUSvA8FFPbij0IHbyw3W4XKg==
 
 expo-image-loader@~4.3.0:
   version "4.3.0"
@@ -6533,6 +6553,11 @@ expo-pwa@0.0.127:
     chalk "^4.0.0"
     commander "2.20.0"
     update-check "1.5.3"
+
+expo-sharing@*, expo-sharing@^11.7.0:
+  version "11.7.0"
+  resolved "https://registry.npmjs.org/expo-sharing/-/expo-sharing-11.7.0.tgz"
+  integrity sha512-konZ7DqFUCiGss1VO/NGeTauwl0B8PyfBPsyXVyGTf52RCbecmF3txsWwVFDFAN+ufGi7a8oAxvGv03kKiTEBA==
 
 expo-splash-screen@~0.20.5:
   version "0.20.5"
@@ -9947,10 +9972,10 @@ react-native-web@~0.19.6:
     postcss-value-parser "^4.2.0"
     styleq "^0.1.3"
 
-react-native@*, "react-native@^0.0.0-0 || 0.60 - 0.72 || 1000.0.0", react-native@>=0.40.0, react-native@>=0.41.2, react-native@>=0.49.1, react-native@>=0.56, react-native@>=0.57, react-native@>=0.59, react-native@>=0.60.0, react-native@>=0.65.0, react-native@>=v0.40.0, react-native@0.72.5:
-  version "0.72.5"
-  resolved "https://registry.npmjs.org/react-native/-/react-native-0.72.5.tgz"
-  integrity sha512-oIewslu5DBwOmo7x5rdzZlZXCqDIna0R4dUwVpfmVteORYLr4yaZo5wQnMeR+H7x54GaMhmgeqp0ZpULtulJFg==
+react-native@*, "react-native@^0.0.0-0 || 0.60 - 0.72 || 1000.0.0", react-native@>=0.40.0, react-native@>=0.41.2, react-native@>=0.49.1, react-native@>=0.56, react-native@>=0.57, react-native@>=0.59, react-native@>=0.60.0, react-native@>=0.65.0, react-native@>=v0.40.0, react-native@0.72.6:
+  version "0.72.6"
+  resolved "https://registry.npmjs.org/react-native/-/react-native-0.72.6.tgz"
+  integrity sha512-RafPY2gM7mcrFySS8TL8x+TIO3q7oAlHpzEmC7Im6pmXni6n1AuufGaVh0Narbr1daxstw7yW7T9BKW5dpVc2A==
   dependencies:
     "@jest/create-cache-key-function" "^29.2.1"
     "@react-native-community/cli" "11.3.7"
