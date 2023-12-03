@@ -27,7 +27,10 @@
     "aws-amplify-react-native": "^7.0.7",
     "expo": "^49.0.17",
     "expo-camera": "~13.4.4",
+    "expo-file-system": "~15.4.5",
+    "expo-image-manipulator": "~11.3.0",
     "expo-image-picker": "~14.3.2",
+    "expo-media-library": "~15.4.1",
     "expo-splash-screen": "~0.20.5",
     "expo-status-bar": "~1.6.0",
     "react": "18.2.0",
@@ -48,7 +51,10 @@
     "react-native-svg": "13.9.0",
     "react-native-vector-icons": "^10.0.2",
     "react-native-view-overflow": "^0.0.5",
-    "react-native-web": "~0.19.6"
+    "react-native-web": "~0.19.6",
+    "stream-chat": "^8.14.4",
+    "stream-chat-expo": "^5.22.1",
+    "stream-chat-react-native": "^5.22.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
