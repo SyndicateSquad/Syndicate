@@ -141,8 +141,8 @@ const SignUpScreen = () => {
                 <CustomInput
                     // placeholder='Phone Number'
                     value={phoneNumber}
-                    // setValue={setPhoneNumber}
-                    setValue={(newPhoneNumber) => setPhoneNumber(newPhoneNumber.replace(/[^0-9]/g, '').slice(0, 10))}
+                    setValue={setPhoneNumber}
+                    // setValue={(newPhoneNumber) => setPhoneNumber(newPhoneNumber.replace(/[^0-9]/g, '').slice(0, 10))}
                     label='Phone-Number'
                     keyboardType='numeric'
                     test='normal'

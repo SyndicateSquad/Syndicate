@@ -208,7 +208,7 @@ def folder_exists(bucket_name, folder_name):
     return 'Contents' in response
 
 def upload_to_user_folder(bucket_name, user_email, file_obj, file_name, content_type):
-    folder_name = user_email  # Folder name is the user's email
+    folder_name = user_email + '/'  # Folder name is the user's email
 
     if not folder_exists(bucket_name, folder_name):
         print(f"Creating folder for {user_email}")

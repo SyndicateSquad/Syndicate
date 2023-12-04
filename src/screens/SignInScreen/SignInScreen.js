@@ -54,12 +54,16 @@ const SignInScreen = () => {
 
 
     const onForgotPasswordPressed = () => {
-        navigation.navigate('ForgotPassword')
+        // navigation.navigate('ForgotPassword')
+        navigation.navigate('Chatting')
     }
     const onSignUpPress = () => {
-        // navigation.navigate('SignUp')
-        navigation.navigate('Developer')
+        navigation.navigate('SignUp')
+        // navigation.navigate('Developer')
     }
+    // const GoToHomeScreen = () => {
+    //     navigation.navigate('Home')
+    // }
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.root}>
@@ -85,6 +89,10 @@ const SignInScreen = () => {
                     label="Password"
                     test='normal'
                 />
+                {/* <CustomButton
+                    text="Home Screen"
+                    onPress={GoToHomeScreen}
+                /> */}
                 <CustomButton
                     text="Sign in"
                     onPress={onSignInPressed}
@@ -101,7 +109,7 @@ const SignInScreen = () => {
                 >
                     OR
                 </Text>
-                <SocialSignInButtons />
+                {/* <SocialSignInButtons /> */}
                 <View
                     style={{ padding: 20, width: '113%' }}
                 >

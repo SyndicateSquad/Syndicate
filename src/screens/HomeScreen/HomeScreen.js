@@ -122,7 +122,8 @@ export default function HomeScreen() {
     }
     const navigation = useNavigation();
     const onProfilePressed = () => {
-        navigation.navigate('Listings')
+        // navigation.navigate('Listings')
+        navigation.navigate('Chatting')
     }
     return (
         <SafeAreaView style={styles.container}>

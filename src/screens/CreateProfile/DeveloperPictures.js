@@ -4,9 +4,9 @@ import ImageUploader from '../../components/ImageUploader/ImageUploader'
 import * as Progress from 'react-native-progress';
 import { useNavigation } from '@react-navigation/native';
 import CustomButton from '../../components/CustomButton/CustomButton';
-import { developerImageToApi } from '../../components/uploadImagesToApi/developerImageToApi';
+import { uploadImagesToApi } from '../../components/uploadImagesToApi/uploadImagesToApi';
 const DeveloperPictures = () => {
-    const [images, setImages] = useState([null, null, null, null, null, null]);
+    const [images, setImages] = useState([null]);
     const navigation = useNavigation();
     const handleNextButtonPress = async () => {
         // Check if at least one image has been selected
@@ -17,7 +17,7 @@ const DeveloperPictures = () => {
             const nonNullImages = images.filter(image => image !== null);
             try {
                 // Call your image upload function and wait for it to finish
-                await developerImageToApi(nonNullImages);
+                await uploadImagesToApi(nonNullImages);
                 // After a successful upload, navigate to the 'Home' screen
                 navigation.navigate('Home');
             } catch (error) {

@@ -7,14 +7,14 @@ with open("confirmation_email.html", 'r') as html:
     confirmation_code_content = html.read()
 
 # api key deleted 
-SENDGRID_API_KEY = "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"
+SENDGRID_API_KEY = "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"
 CONFIRMATION_CODE = randint(12345, 98765)
 
 confirmation_code_content = confirmation_code_content.replace("{{CONFIRMATION_CODE}}", str(CONFIRMATION_CODE))
 
 message = Mail(
     from_email= 'syndicatesquad9@gmail.com',
-    to_emails= 'pranav_pujar@hotmail.com',
+    to_emails= 'aahmedibrahim2002@gmail.com',
     subject= 'Sending an email with Twilio SendGrid',
     html_content= confirmation_code_content)
 try:
