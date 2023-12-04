@@ -22,7 +22,8 @@ export async function uploadImagesToApi(imageUris) {
 
 
         try {
-            const response = await fetch('http://127.0.0.1:8000/uploadToDeveloper', {
+            let url = 'http://127.0.0.1:8000/uploadToDeveloper' + '?user_email=' + user_email
+            const response = await fetch(url, {
                 method: 'POST',
                 body: formData,
                 headers: {
