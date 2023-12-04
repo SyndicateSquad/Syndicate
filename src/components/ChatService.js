@@ -1,23 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text } from 'react-native';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { StyleSheet, View } from 'react-native';  
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StreamChat } from 'stream-chat';
-import { Channel as ChannelType } from 'stream-chat';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { Chat, OverlayProvider, ChannelList } from 'stream-chat-expo';
-import useCachedResources from './Hooks/useCachedResources';
-import useColorScheme from './Hooks/useColorScheme';
+import {
+    Chat,
+    ChannelList,
+    Channel,
+    MessageList,
+    MessageInput
+} from 'stream-chat-expo';
 
 const client = StreamChat.getInstance("5bbwwprpy2jr");
 
 const ChatService = () => {
-    // const isLoadingComplete = useCachedResources()
-    // const colorScheme = useColorScheme()
-    // const [isReady, setIsReady] = useState(false);
     const [channel, setChannel] = useState(null);
+
     const onChannelPressed = (channel) => {
-        setSelectedChannel(channel)
-    }
+        setChannel(channel);
+    };
+
     useEffect(() => {
         const connectUser = async () => {
             await client.connectUser(
@@ -25,7 +26,7 @@ const ChatService = () => {
                     id: 'ai212559',
                     name: 'Ahmed Ibrahim',
                 },
-                client.devToken('ai212559')
+                client.devToken('ai212559'),
             );
             const channel = client.channel(
                 'messaging',
@@ -33,42 +34,47 @@ const ChatService = () => {
                 { name: "Test", }
             );
             await channel.watch();
-            // setIsReady(true)
         };
 
         const disconnectClient = async () => {
             await client.disconnectUser();
-        }
-        connectUser()
+        };
+
+        connectUser();
+
         return () => {
             disconnectClient();
         };
-
     }, []);
-    // if (!isLoadingComplete || !isReady) {
-    //     return null;
-    // } else {
+
     return (
-        <SafeAreaProvider style={styles.root}>
+        <SafeAreaProvider style={styles.container}>
             <Chat client={client}>
-                {/* {setChannel ? (
-                    <Text>
-                        Channel Page
-                    </Text>
+                {channel ? (
+                    <Channel channel={channel}>
+                        <View style={styles.channelContainer}>
+                            <MessageList />
+                            <MessageInput />
+                        </View>
+                    </Channel>
                 ) : (
                     <ChannelList
                         onSelect={onChannelPressed}
                     />
-                )} */}
-                <ChannelList />
+                )}
             </Chat>
         </SafeAreaProvider>
-    )
-}
-// }
+    );
+};
+
 const styles = StyleSheet.create({
-    root: {
-        alignItems: 'center',
+    container: {
+        flex: 1,
+        marginTop: '15%'
+    },
+    channelContainer: {
+        flex: 1,
     },
 });
-export default ChatService
+
+export default ChatService;
