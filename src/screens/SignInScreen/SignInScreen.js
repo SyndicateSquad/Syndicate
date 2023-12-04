@@ -22,7 +22,7 @@ const SignInScreen = () => {
 
     const onSignInPressed = async () => {
         // http://127.0.0.1 is the default socket that's used by FastAPI
-        async function loginUser(url = 'http://127.0.0.1:8000/login', data = { email, password }) {
+        async function loginUser(url = 'http://10.5.3.2:8000/login', data = { email, password }) {
             try {
                 const response = await fetch(url, {
                     method: 'POST',
@@ -58,8 +58,8 @@ const SignInScreen = () => {
         navigation.navigate('Chatting')
     }
     const onSignUpPress = () => {
-        // navigation.navigate('SignUp')
-        navigation.navigate('Developer')
+        navigation.navigate('SignUp')
+        // navigation.navigate('Developer')
     }
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
