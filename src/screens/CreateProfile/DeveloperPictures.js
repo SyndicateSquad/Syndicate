@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import CustomButton from '../../components/CustomButton/CustomButton';
 import { developerImageToApi } from '../../components/uploadImagesToApi/developerImageToApi';
 const DeveloperPictures = () => {
-    const [images, setImages] = useState([null, null, null, null, null, null]);
+    const [images, setImages] = useState([null]);
     const navigation = useNavigation();
     const handleNextButtonPress = async () => {
         // Check if at least one image has been selected

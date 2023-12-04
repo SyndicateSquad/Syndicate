@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import CustomInput from '../../components/CustomInput/CustomInput';
 import * as Progress from 'react-native-progress';
 import { useNavigation } from '@react-navigation/native';
-// import { MultipleSelectList } from 'react-native-dropdown-select-list'
 import { SelectList } from 'react-native-dropdown-select-list'
 import ImageUploader from '../../components/ImageUploader/ImageUploader'
 import CustomButton from '../../components/CustomButton/CustomButton';

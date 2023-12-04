@@ -22,7 +22,7 @@ export async function developerImageToApi(imageUris) {
 
 
         try {
-            const response = await fetch('http://192.168.0.20:8000/uploadToDeveloper', {
+            const response = await fetch('http://0.0.0.0:8000/uploadToDeveloper', {
                 method: 'POST',
                 body: formData,
                 headers: {
