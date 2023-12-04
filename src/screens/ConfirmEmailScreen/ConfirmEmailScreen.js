@@ -42,6 +42,7 @@ const ConfirmEmailScreen = () => {
                     },
                     body: JSON.stringify(data),
                 });
+                
                 //receive the random-generated confirmation code from backend
                 const generated_conf_code = await response.json(); 
                 await AsyncStorage.setItem('confimation_code', generated_conf_code);
