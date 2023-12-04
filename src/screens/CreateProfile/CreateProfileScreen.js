@@ -53,7 +53,7 @@ const CreateProfileScreen = () => {
 
     const pushSignUpDetails = async (val) => {
         const user_type = val;
-        const url = 'http://10.5.3.2:8000/signup';
+        const url = 'http://127.0.0.1:8000/signup';
         const data = {
             email,
             password,

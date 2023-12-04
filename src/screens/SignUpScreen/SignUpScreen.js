@@ -47,7 +47,7 @@ const SignUpScreen = () => {
 
     // const email = await AsyncStorage.getItem('userEmail');
 
-    async function verifyEmailDNE(url = 'http://10.5.3.2:8000/verify_email_dne', data = { email }) {
+    async function verifyEmailDNE(url = 'http://127.0.0.1:8000/verify_email_dne', data = { email }) {
         try {
             const response = await fetch(url, {
                 method: 'POST',
@@ -101,7 +101,7 @@ const SignUpScreen = () => {
         }
     }
 
-    async function sendConfirmationCode(url = 'http://10.5.3.2:8000/confirmation_code', data = { email }) {
+    async function sendConfirmationCode(url = 'http://127.0.0.1:8000/confirmation_code', data = { email }) {
         try {
             const response = await fetch(url, {
                 method: 'POST',
