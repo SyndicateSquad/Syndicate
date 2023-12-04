@@ -42,7 +42,6 @@ const ConfirmEmailScreen = () => {
                     },
                     body: JSON.stringify(data),
                 });
-                
                 //receive the random-generated confirmation code from backend
                 const generated_conf_code = await response.json(); 
                 await AsyncStorage.setItem('confimation_code', generated_conf_code);
@@ -76,9 +75,9 @@ const ConfirmEmailScreen = () => {
                 <CustomInput
                     // placeholder='Enter your confirmation code'
                     value={input_code}
-                    // setValue={setCode}
-                    setValue={(numericCode) => setCode(numericCode.replace(/[^0-9]/g, '').slice(0, 10), 10)}
-                    keyboardType = 'numeric'
+                    setValue={setCode}
+                    // setValue={(numericCode) => setCode(numericCode.replace(/[^0-9]/g, '').slice(0, 10), 10)}
+                    label='Phone-Number'
                     test='normal'
                     maxLength={5}
                 />

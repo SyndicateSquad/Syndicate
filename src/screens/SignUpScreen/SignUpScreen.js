@@ -101,7 +101,7 @@ const SignUpScreen = () => {
         }
     }
 
-    async function sendConfirmationCode(url = 'http://127.0.0.1:8000/confirmation_code', data = { email }) {
+    async function sendConfirmationCode(url = 'http://10.5.3.2:8000/confirmation_code', data = { email }) {
         try {
             const response = await fetch(url, {
                 method: 'POST',
@@ -141,8 +141,8 @@ const SignUpScreen = () => {
                 <CustomInput
                     // placeholder='Phone Number'
                     value={phoneNumber}
-                    // setValue={setPhoneNumber}
-                    setValue={(newPhoneNumber) => setPhoneNumber(newPhoneNumber.replace(/[^0-9]/g, '').slice(0, 10))}
+                    setValue={setPhoneNumber}
+                    // setValue={(newPhoneNumber) => setPhoneNumber(newPhoneNumber.replace(/[^0-9]/g, '').slice(0, 10))}
                     label='Phone-Number'
                     keyboardType='numeric'
                     test='normal'
