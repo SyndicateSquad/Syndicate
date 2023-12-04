@@ -31,40 +31,16 @@ app.add_middleware(
 )
 
 
+# Keeping resources ready for use inside FastAPI functions
 dynamoDB = boto3.resource('dynamodb')
 s3 = boto3.client('s3')
 
 
 
+# Defining Classes for proper reading of JSON input from incoming React Native requests
 class LoginCredential(BaseModel):
     email: str
     password: str
-
-# Check for login credential validity
-@app.post('/login')
-async def receive_data(credential: LoginCredential):
-    # Process the data
-    table = dynamoDB.Table('Investor')
-    print("backend hit!!")
-    query_key = 'Email'  # The key you want to query on
-    query_value = credential.email.lower()  # The value to query for
-    
-    key_condition_expression = Key(query_key).eq(query_value)
-
-    # Execute the query
-    response = table.query(
-        KeyConditionExpression=key_condition_expression
-    )
-
-    # return True
-    # Process the results
-    if len(response['Items']) > 0:
-        if credential.password == response['Items'][0]['Password']:
-            # return True 
-            return JSONResponse(content=True, status_code=200)
-    # return False
-    return JSONResponse(content=False, status_code=400)
-
 
 class SignUpCredential(BaseModel):
     email: str
@@ -78,6 +54,35 @@ class SignUpCredential(BaseModel):
     phone_number: int
     bio: str
     user_type: str
+
+class UserEmail(BaseModel):
+    email: str
+    
+
+# Verify Login Credential Validity
+@app.post('/login')
+async def receive_data(credential: LoginCredential):
+    
+    # Process the data
+    table = dynamoDB.Table('Users')
+
+    query_key = 'email'
+    query_value = credential.email  
+    
+    key_condition_expression = Key(query_key).eq(query_value)
+
+    # Execute the query
+    response = table.query(
+        KeyConditionExpression=key_condition_expression
+    )
+
+    # Process the results to check for password 
+    if len(response['Items']) > 0:
+        if credential.password == response['Items'][0]['password']:
+            return JSONResponse(content=True, status_code=200)
+
+    return JSONResponse(content=False, status_code=400)
+
 
 
 # Add Sign Up details to DynamoDB
@@ -110,9 +115,7 @@ async def signup(credential: SignUpCredential):
     return JSONResponse(content= "Successfully Signed Up!", status_code= 200)
     
 
-class UserEmail(BaseModel):
-    email: str
-    
+# Check if Email already exists in `Users` table
 @app.post('/verify_email_dne')
 def verify_email_dne(user: UserEmail):
     
@@ -130,21 +133,22 @@ def verify_email_dne(user: UserEmail):
         
     return JSONResponse(content= "Email does not exist in records", status_code=200)
 
+
 # Handle Delete User Request
 @app.post('/delete_user')
 async def delete(user: UserEmail):
-
-    primary_key = {'Email': user.email.lower()}
-    table = dynamoDB.Table('Users')
+    
+    primary_key = {'email': user.email}
+    
     try:
         response = table.delete_item(
             Key = primary_key
         )
     except Exception as e:
         print(f'DynamoDB Error: {e}')    
-        return False
+        return JSONResponse(content=False, status_code=400)
     
-    return True
+    return JSONResponse(content)
 
 # Generate Confirmation Code during Sign Up/ Forgot Password
 @app.post('/confirmation_code')
@@ -155,6 +159,7 @@ async def generate_confirmation_code(user: UserEmail):
 
     CONFIRMATION_CODE = randint(12345, 98765)
 
+    # Substitute in the actual confirmation code into the HTML file
     confirmation_email_content = confirmation_email_content.replace("{{CONFIRMATION_CODE}}", str(CONFIRMATION_CODE))
 
     message = Mail(

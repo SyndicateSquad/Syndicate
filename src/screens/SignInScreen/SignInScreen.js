@@ -76,9 +76,10 @@ const SignInScreen = () => {
                 <CustomInput
                     // placeholder='Email'
                     value={email}
-                    setValue={setEmail}
+                    setValue={(newEmail) => setEmail(newEmail.toLowerCase().trim())}
                     label='Email'
                     test='normal'
+                    maxLength={30}
                 />
                 <Text style={[styles.label, { right: 140 }]}>Password</Text>
                 <CustomInput
@@ -88,6 +89,7 @@ const SignInScreen = () => {
                     secureTextEntry
                     label="Password"
                     test='normal'
+                    maxLength={20}
                 />
                 {/* <CustomButton
                     text="Home Screen"

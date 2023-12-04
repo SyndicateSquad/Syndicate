@@ -11,6 +11,9 @@ test.py
 dist/
 web-build/
 
+#pycache
+__pycache__/*
+
 # Native
 *.orig.*
 *.jks
