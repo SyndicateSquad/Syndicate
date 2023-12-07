@@ -5,14 +5,19 @@ import * as Progress from 'react-native-progress';
 import { useNavigation } from '@react-navigation/native';
 import { MultipleSelectList } from 'react-native-dropdown-select-list'
 import CustomButton from '../../components/CustomButton/CustomButton';
+import { SelectList } from 'react-native-dropdown-select-list'
+import ImageUploader from '../../components/ImageUploader/ImageUploader'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const InvestorProfile = () => {
-    const [country, setCountry] = useState('');
+    const [latitude, setLatitude] = useState('');
+    const [longitude, setLongitude] = useState('');
     const [selected, setSelected] = React.useState([]);
     const propertyType = [
         { key: '1', value: 'Commercial' },
         { key: '2', value: 'Residential' },
         { key: '3', value: 'Hospitality' },
-        { key: '4', value: 'Industrial', },
+        { key: '4', value: 'Industrial' },
     ]
     const priceRange = [
         { key: '1', value: '$0 - $50,000' },
@@ -23,12 +28,13 @@ const InvestorProfile = () => {
         { key: '6', value: '$1,000,000+' },
     ]
     const InvestmentCapacity = [
-        { key: '1', value: '$0 - $50,000' },
-        { key: '2', value: '$50,000 - $100,000' },
-        { key: '3', value: '$100,000 - $250,000' },
-        { key: '4', value: '$250,000 - $500,000' },
-        { key: '5', value: '$500,000 - $1,000,000' },
-        { key: '6', value: '$1,000,000+' },
+        { key: '1', value: '< $25,000' },
+        { key: '2', value: '$25,000 - $49,999' },
+        { key: '3', value: '$50,000 - $99,999' },
+        { key: '4', value: '$100,000 - $249,999' },
+        { key: '5', value: '$250,000 - $499,999' },
+        { key: '6', value: '$500,000 - $999,999' },
+        { key: '7', value: '$1,000,000+' },
     ]
     const propertySize = [
         { key: '1', value: '0 - 10,000 sq ft' },
@@ -40,54 +46,68 @@ const InvestorProfile = () => {
     ]
     const navigation = useNavigation();
     const handleNextButtonPress = () => {
-        navigation.navigate('PictureForInvestor');
+        navigation.navigate('Home');
     }
     return (
         <ScrollView>
             <View style={styles.root}>
-                <Progress.Bar progress={0.6} width={415} />
+                <Progress.Bar progress={0.9} width={415} />
                 <Text style={styles.title}>
                     Choose Your Preferences
                 </Text>
-                <Text style={[styles.label, { right: 130 }]}>Property Type</Text>
+                {/* <Text style={[styles.label, { right: 130 }]}>Property Type</Text>
                 <MultipleSelectList
                     setSelected={(val) => setSelected(val)}
                     data={propertyType}
                     placeholder='               Select Property Type               '
                     maxHeight={250}
-                />
-                <Text style={[styles.label, { right: 100 }]}>Property Price Range</Text>
+                /> */}
+                {/* <Text style={[styles.label, { right: 100 }]}>Property Price Range</Text>
                 <MultipleSelectList
                     setSelected={(val) => setSelected(val)}
                     data={priceRange}
                     placeholder='               Select Price Range                  '
                     maxHeight={300}
-                />
-                <Text style={[styles.label, { right: 85 }]}>Your Investment Capacity</Text>
-                <MultipleSelectList
+                /> */}
+                <Text style={[styles.label, { right: 103 }, { paddingBottom: 10 }]}>Investment Capacity</Text>
+                <SelectList
                     setSelected={(val) => setSelected(val)}
                     data={InvestmentCapacity}
                     placeholder='      Select Your Investment Capacity     '
                     maxHeight={210}
                 />
-                <Text style={[styles.label, { right: 135 }]}>Property size</Text>
+                {/* <Text style={[styles.label, { right: 135 }]}>Property size</Text>
                 <MultipleSelectList
                     setSelected={(val) => setSelected(val)}
                     data={propertySize}
                     placeholder='      Select Your Desired Property Size     '
                     maxHeight={300}
-                />
-                <Text style={[styles.label, { right: 150 }]}>Location</Text>
+                /> */}
+                <Text style={[styles.label, { right: 167 }, { paddingTop: 30 }]}>City</Text>
                 <CustomInput
                     placeholder='Country'
                     value={country}
                     test='normal'
                     setValue={setCountry}
                 />
-                <CustomButton
-                    text="Next"
-                    onPress={handleNextButtonPress} // Call handleNextButtonPress when the button is pressed
+                <Text style={[styles.label, { right: 150 }]}>Country</Text>
+                <CustomInput
+                    placeholder='Country'
+                    value={country}
+                    test='normal'
+                    setValue={setCountry}
                 />
+                <View style={styles.next}>
+                    <CustomButton
+                        text="Next"
+                        onPress={handleNextButtonPress} 
+                    />
+                </View>
+
+                <View style={styles.imageU}>
+                    <ImageUploader />
+                </View>
+
             </View>
         </ScrollView>
 
@@ -119,6 +139,19 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 100,
         marginBottom: 5,
+    },
+    next: {
+        top: 275,
+        width: '100%',
+
+        padding: 15,
+        marginVertical: 5,
+
+        alignItems: 'center',
+        borderRadius: 5,
+    },
+    imageU: {
+        top: -125,
     },
 });
 

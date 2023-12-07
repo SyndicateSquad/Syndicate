@@ -27,11 +27,13 @@ const NewPasswordScreen = () => {
                 <CustomInput
                     placeholder='Code'
                     value={code}
+                    test='normal'
                     setValue={setCode}
                 />
                 <CustomInput
                     placeholder='Enter your new password'
                     value={newPassword}
+                    test='normal'
                     setValue={setNewPassword}
                 />
                 <CustomButton

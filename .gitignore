@@ -3,10 +3,16 @@
 # dependencies
 node_modules/
 
+# development files
+test.py
+
 # Expo
 .expo/
 dist/
 web-build/
+
+#pycache
+__pycache__/*
 
 # Native
 *.orig.*
