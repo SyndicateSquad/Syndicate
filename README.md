@@ -66,6 +66,10 @@ uvicorn backend:app --reload --port 8000
 2. Uvicorn
 3. Boto3
 4. AWS CLI (to configure credentials for access to S3 and DynamoDB)
+5. SendGrid API
+6. Expo
+
+Some of these dependencies have API keys that need to be initialized as an environment variable prior to running.
 
 # **Syndicate**
 
@@ -73,7 +77,7 @@ Connects Developers and Investors to build Real Estate
 
 ## _Profile Creation_
 
-**Developers/Syndicators**: When developers and syndicators join the app, they create profiles with details about their real estate projects. This includes property descriptions, location, project scope, and uploaded documents like permits and cost schedules.
+**Developers/Syndicators**: When developers and syndicators join the app, they create profiles with details about their real estate projects. This includes property descriptions, location, and uploaded images.
 
 **Investors**: Investors set up profiles with their investment preferences. They specify the types of properties they are interested in, such as residential, commercial, or industrial, along with investment size and location preferences.
 
@@ -87,7 +91,7 @@ Connects Developers and Investors to build Real Estate
 
 **Matching Algorithm**: The app employs a matching algorithm similar to Tinder's swiping mechanism. Developers, syndicators, and investors can browse profiles and swipe right (like) or left (dislike) on profiles that align with their interests.
 
-**Mutual Matches**: Investors swipe on Developers first. Developers then get to choose which investors they want to choose. When two users swipe right on each other's profiles, it's considered a "match." This mutual interest initiates a connection between them, and the two entities can communicate with each other.
+**Matches**: Investors swipe on Developers, which registers as a "match" which lets them chat with each other. 
 
 ## _Communication_
 
