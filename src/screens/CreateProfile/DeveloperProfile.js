@@ -5,6 +5,7 @@ import * as Progress from 'react-native-progress';
 import { useNavigation } from '@react-navigation/native';
 import { MultipleSelectList } from 'react-native-dropdown-select-list'
 import CustomButton from '../../components/CustomButton/CustomButton';
+import { uploadImagesToApi } from '../../components/uploadImagesToApi/uploadImagesToApi';
 const InvestorProfile = () => {
     const [bio, setBio] = useState('');
     const [country, setCountry] = useState('');
@@ -31,10 +32,30 @@ const InvestorProfile = () => {
         { key: '5', value: '200,000 - 500,000 sq ft' },
         { key: '6', value: '500,000+ sq ft' }
     ]
+    const [images, setImages] = useState([null]);
     const navigation = useNavigation();
-    const handleNextButtonPress = () => {
-        navigation.navigate('PicturesForProperty');
-    }
+    const handleNextButtonPress = async () => {
+        // Check if at least one image has been selected
+        const atLeastOneImageSelected = images.some(image => image !== null);
+
+        if (atLeastOneImageSelected) {
+            // At least one image is selected, proceed with uploading
+            const nonNullImages = images.filter(image => image !== null);
+            try {
+                // Call your image upload function and wait for it to finish
+                await uploadImagesToApi(nonNullImages);
+                // After a successful upload, navigate to the 'Home' screen
+                navigation.navigate('Home');
+            } catch (error) {
+                // If the upload fails, handle the error (e.g., show an alert to the user)
+                console.error(error);
+                alert('Failed to upload images. Please try again.');
+            }
+        } else {
+            // No images have been selected, inform the user
+            alert('Please upload at least one image before continuing.');
+        }
+    };
     return (
         <ScrollView>
             <View style={styles.root}>
@@ -76,10 +97,17 @@ const InvestorProfile = () => {
                     test='normal'
                     setValue={setCountry}
                 />
-                <CustomButton
-                    text="Next"
-                    onPress={handleNextButtonPress} // Call handleNextButtonPress when the button is pressed
-                />
+                <View style={styles.next}>
+                    <CustomButton
+                        text="Next"
+                        onPress={handleNextButtonPress}
+                        style={styles.next}
+                    />
+                </View>
+                <View style={styles.imageU}>
+                    <ImageUploader setSelectedImages={setImages}/>
+                </View>
+
             </View>
         </ScrollView>
 
@@ -87,16 +115,16 @@ const InvestorProfile = () => {
 }
 
 const styles = StyleSheet.create({
-    root: {
+    roo10,
+        marginVertical: 5,
+        alignItems: 'center',
+    },t: {
         paddingTop: '18%',
         width: 'auto',
         borderColor: '#e8e8e8',
         borderWidth: 1,
         borderRadius: 10,
-        paddingHorizontal: 10,
-        marginVertical: 5,
-        alignItems: 'center',
-    },
+        paddingHorizontal: 
     title: {
         paddingBottom: '4%',
         paddingRight: '30%',
@@ -111,6 +139,16 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 100,
         marginBottom: 5,
+    },
+    next: {
+        top: 275,
+        width: '100%',
+
+        padding: 15,
+        marginVertical: 5,
+
+        alignItems: 'center',
+        borderRadius: 5,
     },
 });
 

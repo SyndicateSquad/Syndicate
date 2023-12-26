@@ -21,11 +21,80 @@ const SignUpScreen = () => {
     const allowedDomains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'icloud.com', 'outlook.com'];
 
     const onRegisterPressed = async () => {
+<<<<<<< Updated upstream
         
         // const email = await AsyncStorage.getItem('userEmail');
         let valid_flag = true;
         
         async function verifyEmailDNE(url = 'http://127.0.0.1:8000/verify_email_dne', data = { email }) {
+=======
+        // if (password !== passwordRepeat) {
+        //     console.warn('Passwords do not match. Please try again.');
+        // } else {
+        //     try {
+        //         // Save user's email and password in secure storage
+        //         await AsyncStorage.setItem('userEmail', email);
+        //         await AsyncStorage.setItem('userPassword', password);
+
+        //         navigation.navigate('ConfirmEmail');
+        //     } catch (error) {
+        //         console.error('Error saving user credentials:', error);
+        //     }
+        // }
+        navigation.navigate('ConfirmEmail');
+        await verifyEmailDNE();
+        await validateEntries();
+        //flag is set to false by now if any test case fails
+        if (valid_flag) {
+            //navigation to next screen is within this function
+            await sendConfirmationCode();
+        }
+    }
+
+
+    // const email = await AsyncStorage.getItem('userEmail');
+
+    async function verifyEmailDNE(url = 'http://10.5.3.2:8000/verify_email_dne', data = { email }) {
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+
+            const responseData = await response.json();
+
+            if (response.ok) {
+                console.log("New Email Detected")
+            } else {
+                console.error("Error: ", responseData);
+                navigation.navigate('SignIn');
+
+                valid_flag = false; //probably does not matter lol
+            }
+
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    async function validateEntries() {
+        if (password !== passwordRepeat) {
+            console.warn('Passwords do not match. Please try again.');
+            valid_flag = false;
+
+        } else if (phoneNumber.trim() === "" || email.trim() === "" || password.trim() === "") {
+            console.warn("Please fill in all fields")
+            valid_flag = false;
+
+        } else if (!allowedDomains.includes(email.split('@')[1])) {
+            console.warn("Invalid Email");
+            valid_flag = false;
+
+        } else {
+>>>>>>> Stashed changes
             try {
                 const response = await fetch(url, {
                     method: 'POST',

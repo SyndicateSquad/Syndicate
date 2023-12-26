@@ -11,9 +11,12 @@ from pydantic import BaseModel
 from fastapi.responses import JSONResponse
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
+from botocore.exceptions import NoCredentialsError, ClientError
 
 
 app = FastAPI()
+load_dotenv()
+sendgrid_api_key = os.environ.get('SENDGRID_API_KEY')
 
 origins = [
     "http://10.182.149.211:8000",
@@ -167,7 +170,7 @@ async def generate_confirmation_code(user: UserEmail):
         html_content= confirmation_email_content)
 
     try:
-        sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+        sg = SendGridAPIClient(sendgrid_api_key)
         response = sg.send(message)
 
     except Exception as e:

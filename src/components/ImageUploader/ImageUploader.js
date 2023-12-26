@@ -2,8 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Button, Image, StyleSheet, ScrollView } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
+<<<<<<< Updated upstream
 export default function ImageUploader() {
     const [images, setImages] = useState([null, null, null, null, null, null]);
+=======
+export default function ImageUploader({ setSelectedImages }) {
+    const [images, setImages] = useState([null]);
+>>>>>>> Stashed changes
 
     useEffect(() => {
         (async () => {

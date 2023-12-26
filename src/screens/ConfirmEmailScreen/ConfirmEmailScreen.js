@@ -22,6 +22,7 @@ const ConfirmEmailScreen = () => {
         
         if (input_code !== generatedConfirmationCode){
             console.warn("Incorrect Code");
+            // navigation.navigate("CreateProfile");
         } else {
             navigation.navigate("CreateProfile");
         }
@@ -32,7 +33,7 @@ const ConfirmEmailScreen = () => {
 
         const email = await AsyncStorage.getItem('userEmail');
 
-        async function sendConfirmationCode(url = 'http://127.0.0.1:8000/confirmation_code', data = { email }) {
+        async function sendConfirmationCode(url = 'http://10.5.3.2:8000/confirmation_code', data = { email }) {
             try {
                 const response = await fetch(url, {
                     method: 'POST',
@@ -41,7 +42,6 @@ const ConfirmEmailScreen = () => {
                     },
                     body: JSON.stringify(data),
                 });
-                
                 //receive the random-generated confirmation code from backend
                 const generated_conf_code = await response.json(); 
                 await AsyncStorage.setItem('confimation_code', generated_conf_code);
