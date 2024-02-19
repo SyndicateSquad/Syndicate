@@ -67,7 +67,7 @@ uvicorn backend:app --reload --port 8000
 3. Boto3
 4. AWS CLI (to configure credentials for access to S3 and DynamoDB)
 
-# **Syndicate** (img/demo_1min.gif)
+![Syndicate](img/demo_1min.gif)
 
 Connects Developers and Investors to build Real Estate
 
